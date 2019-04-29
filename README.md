@@ -13,7 +13,7 @@ docker-compose down
 odes u app folder i roknes
 npm i
 da instaliras node module
-i onda da runnas server rokni
+i onda da runnas server rokni \n
 npm run dev
 
 nezz dal znas za taj trik ali mores si postavit skripte u package.json
