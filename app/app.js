@@ -20,7 +20,7 @@ server.use(express.static("public"))
 server.get("/", (req,res) => res.render("home", {
   title: "Home"
 }));
-server.get("/login", (req, res) => res.render("login", {
+server.get("/user", (req, res) => res.render("user", {
   errorMsg: req.body.msg
 }));
 
