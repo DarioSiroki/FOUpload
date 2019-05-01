@@ -1,4 +1,4 @@
-$("#ls").click(()=>{
+$("#ls").click(() => {
   $.ajax({
     url: "/api/users/login",
     type: "POST",
@@ -6,13 +6,13 @@ $("#ls").click(()=>{
       email: $("#lemail").val(),
       password: $("#lpw").val()
     },
-    success: () => location.href = "/",
+    success: () => (location.href = "/"),
     error: e => $("#login-msg").html(e.responseJSON.msg)
-  })
-})
+  });
+});
 
-$("#rs").click(()=>{
-  if($("#pw1").val() !== $("#pw2").val()) {
+$("#rs").click(() => {
+  if ($("#pw1").val() !== $("#pw2").val()) {
     $("#register-msg").html("Passwords don't match");
     return;
   }
@@ -24,7 +24,7 @@ $("#rs").click(()=>{
       email: $("#remail").val(),
       password: $("#pw1").val()
     },
-    success: () => location.href = "/",
+    success: () => (location.href = "/"),
     error: e => $("#register-msg").html(e.responseJSON.msg)
-  })
-})
+  });
+});

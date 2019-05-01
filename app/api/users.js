@@ -16,10 +16,8 @@ router.post("/login", (req, res) => {
     })
     .then(data=>{
       if(!data.length) {
-        console.log("inv un")
         res.status(403).json({msg: "Invalid username/email"});
       } else if(sha512(password)!==data[0].password) {
-        console.log("inv pw")
         res.status(403).json({msg: "Invalid password"})
       } else {
         console.log("valid")
