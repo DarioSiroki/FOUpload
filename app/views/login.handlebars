@@ -1,36 +1,34 @@
-<div style="width: 500px; padding: 30px; border: 3px solid black; border-radius: 26px; margin: auto; display:inline-block;">
-  <form method="post" action="/api/users/login">
+<div class="login-form">
     <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control"  name="email" placeholder="Enter email">
-      <small  class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <label>Email address</label>
+      <input id="lemail" type="email" class="form-control" placeholder="Enter email">
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control"  name="password" placeholder="Password">
+      <label>Password</label>
+      <input id="lpw" type="password" class="form-control" placeholder="Password">
     </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input">
-      <label class="form-check-label" for="exampleCheck1">Remember me</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
+    <p id="login-msg" class="auth-error"> &nbsp </p>
+    <button id="ls" type="submit" class="btn btn-primary">Login</button>
 </div>
-<div style="width: 500px; padding: 30px; border: 3px solid black; border-radius: 26px; margin: auto; display:inline-block;">
-  <form>
+
+<div class="register-form">
     <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email">
-      <small  class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <label>Email address</label>
+      <input id="remail" type="email" class="form-control" placeholder="Enter email">
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control"  placeholder="Password">
+      <label>Username</label>
+      <input id="username" type="username" class="form-control" placeholder="Enter username">
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Repeat password</label>
-      <input type="password" class="form-control"  placeholder="Password">
+      <label>Password</label>
+      <input id="pw1" type="password" class="form-control"  placeholder="Password">
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
+    <div class="form-group">
+      <label>Repeat password</label>
+      <input id="pw2" type="password" class="form-control"  placeholder="Password">
+    </div>
+    <p id="register-msg" class="auth-error"> &nbsp </p>
+    <button id="rs" type="submit" class="btn btn-primary">Register</button>
 </div>
+<script src="js/user.js"> </script>

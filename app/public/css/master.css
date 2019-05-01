@@ -1,0 +1,25 @@
+.login-form {
+  width: 500px;
+  padding: 30px;
+  border: 3px solid black;
+  border-radius: 26px;
+  margin: auto;
+  display:inline-block;
+}
+
+.register-form {
+  width: 500px;
+  padding: 30px;
+  border: 3px solid black;
+  border-radius: 26px;
+  margin: auto;
+  display:inline-block;
+}
+
+.auth-error {
+  color: red;
+  margin: 10px;
+  margin-left: 0px;
+  font-family: sans-serif;
+  font-weight: 600;
+}

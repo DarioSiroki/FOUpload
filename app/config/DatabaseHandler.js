@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
-const keys = require("../credentials/keys");
+const path = require("path");
+require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
-const sequelize = new Sequelize(keys.dbURI);
-
+const sequelize = new Sequelize(process.env.DB_URI);
 sequelize
   .authenticate()
   .then(() => {
