@@ -20,27 +20,43 @@ server.use(cookieParser());
 // API routes
 server.use("/api/users", require("./api/users"));
 
+
 // Handlebars routes
 server.use(express.static("public"));
+
 server.get("/", (req, res) => {
-    jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
-      if(e){
-        console.log(e);
-      } else {
-        console.log(data)
-      }
-    })
-    res.render("home", {
-      title: "Home"
-    });
-  }
-);
-server.get("/user", (req, res) =>
+  const sessiondata = jwtVerify(req);
+  const always = alwaysRender(sessiondata);
++ res.render("home", {
+    title: "Home",
+    always
+  });
+});
+server.get("/user", (req, res) => {
+  const sessiondata = jwtVerify(req);
+  const always = alwaysRender(sessiondata);
   res.render("user", {
-    errorMsg: req.body.msg
-  })
-);
+    errorMsg: req.body.msg,
+    always
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`App running on port ${PORT}.`));
+
+let jwtVerify = (req) => {
+  var data;
+  jwt.verify(req.cookies.session, process.env.SECRET, (e, tmpdata) => {
+    if(!e){
+      data = tmpdata;
+    }
+  })
+  return data;
+}
+
+let alwaysRender = (sessiondata) => {
+  return {
+    username: (sessiondata)?sessiondata.username:""
+  };
+}
