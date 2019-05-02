@@ -14,49 +14,39 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
 // Cookie parse middleware
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 server.use(cookieParser());
+
+// Session verification middleware
+let verifySession = (req, res, next) => {
+  jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
+    req.allow = e ? true : false;
+    req.user = e ? "" : data;
+  });
+  next();
+};
+server.use(verifySession);
 
 // API routes
 server.use("/api/users", require("./api/users"));
 
-
 // Handlebars routes
 server.use(express.static("public"));
 
-server.get("/", (req, res) => {
-  const sessiondata = jwtVerify(req);
-  const always = alwaysRender(sessiondata);
-+ res.render("home", {
+server.get("/", verifySession, (req, res) => {
+  +res.render("home", {
     title: "Home",
-    always
+    always: req.user
   });
 });
-server.get("/user", (req, res) => {
-  const sessiondata = jwtVerify(req);
-  const always = alwaysRender(sessiondata);
+
+server.get("/user", verifySession, (req, res) => {
   res.render("user", {
     errorMsg: req.body.msg,
-    always
+    always: req.user
   });
 });
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`App running on port ${PORT}.`));
-
-let jwtVerify = (req) => {
-  var data;
-  jwt.verify(req.cookies.session, process.env.SECRET, (e, tmpdata) => {
-    if(!e){
-      data = tmpdata;
-    }
-  })
-  return data;
-}
-
-let alwaysRender = (sessiondata) => {
-  return {
-    username: (sessiondata)?sessiondata.username:""
-  };
-}
