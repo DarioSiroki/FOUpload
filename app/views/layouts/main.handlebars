@@ -37,7 +37,9 @@
 
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="js/user.js"></script>
+    {{#unless always.username}}
+      <script src="js/user.js"></script>
+    {{/unless}}
     <script src="js/main.js"></script>
   </body>
 </html>
