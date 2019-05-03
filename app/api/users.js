@@ -21,7 +21,6 @@ router.post("/login", (req, res) => {
       } else if(sha512(password)!==data[0].password) {
         res.status(403).json({msg: "Invalid password"})
       } else {
-        console.log("valid")
         jwt.sign({ "username": data[0].username }, process.env.SECRET, (err, token) => {
           res.cookie("session", token);
           res.json({msg: "Successfully logged in"});

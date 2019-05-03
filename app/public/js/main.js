@@ -7,5 +7,4 @@ $("html").click(function() {
 
 $(".cust-dropdown").click(function() {
     $(this).parent().find(".cust-dropdown-menu").show();
-
 });

@@ -17,24 +17,23 @@ server.use(express.urlencoded({ extended: false }));
 const cookieParser = require("cookie-parser");
 server.use(cookieParser());
 
-// Session verification middleware
+// Session verification function
 let verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.user = e ? "" : data;
   });
   next();
 };
-server.use(verifySession);
 
 // API routes
 server.use("/api/users", require("./api/users"));
 
-// Handlebars routes
+// Public files route
 server.use(express.static("public"));
 
+// Handlebars routes
 server.get("/", verifySession, (req, res) => {
-
-  +res.render("home", {
+  res.render("home", {
     title: "Home",
     always: req.user
   });
