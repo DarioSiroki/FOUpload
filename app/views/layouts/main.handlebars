@@ -5,7 +5,6 @@
     <title>{{{title}}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/master.css">
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="  crossorigin="anonymous"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -20,8 +19,11 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/user">{{#if always.username}}{{always.username}}{{else}}Not logged in{{/if}}</a>
+          <li class="nav-item" id="reglog">
+            <a class="nav-link cust-dropdown" href="javascript:void(0)">{{#if always.username}}{{always.username}}{{else}}Not logged in{{/if}}</a>
+            {{#unless always.username}}
+              {{>reglog_menu}}
+            {{/unless}}
           </li>
           <li class="nav-item">
             {{#if always.username}}
@@ -32,5 +34,10 @@
       </div>
     </nav>
     {{{body}}}
+
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

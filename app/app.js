@@ -6,7 +6,7 @@ require("dotenv").config();
 const server = express();
 
 // Handlebars middleware
-server.engine("handlebars", exphbs({ defaultLayout: "main" }));
+server.engine("handlebars", exphbs({ defaultLayout: "main", partialsDir: __dirname + '/views/partials/' }));
 server.set("view engine", "handlebars");
 
 // Body parser middleware
@@ -20,7 +20,6 @@ server.use(cookieParser());
 // Session verification middleware
 let verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
-    req.allow = e ? true : false;
     req.user = e ? "" : data;
   });
   next();
@@ -34,18 +33,13 @@ server.use("/api/users", require("./api/users"));
 server.use(express.static("public"));
 
 server.get("/", verifySession, (req, res) => {
+
   +res.render("home", {
     title: "Home",
     always: req.user
   });
 });
 
-server.get("/user", verifySession, (req, res) => {
-  res.render("user", {
-    errorMsg: req.body.msg,
-    always: req.user
-  });
-});
 
 const PORT = process.env.PORT || 5000;
 
