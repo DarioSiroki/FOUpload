@@ -10,6 +10,14 @@ const STORAGE_PATH = path.join(__dirname, "..", "storage");
 // express-fileupload middleware
 router.use(fileUpload());
 
+const detectText = async(imgPath) => {
+  const vision = require('@google-cloud/vision');
+  const client = new vision.ImageAnnotatorClient();
+  const [result] = await client.textDetection(imgPath);
+  const detections = result.textAnnotations;
+  return detections[0].description
+}
+
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.isValidSession = e ? false : true;
@@ -32,7 +40,14 @@ router.put("/", verifySession, (req, res) => {
       const filePath = path.join(uploadPath, file.name);
       file.mv(filePath, e => {
         if(e) res.status(500).send("Server error");
-        else res.send("File uploaded");
+        else {
+          res.send("File uploaded");
+          // Create text file of image
+          if(req.body.ocr) {
+            const text = detectText(uploadPath);
+            fs.writeFileSync(filePath + ".txt", text, (e) => if(e) console.log(e));
+          }
+        };
       });
     } else {
       if(req.body.folder){
