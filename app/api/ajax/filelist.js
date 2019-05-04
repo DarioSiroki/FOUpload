@@ -27,34 +27,34 @@ router.post("/", (req, res) => {
         }
         catch (err) {}
         if(files) {
+            const curtime = new Date();
             files.forEach(file => {
                 const ext = file.split('.').pop();
                 var stats = fs.statSync(path.join(pathx,file));
                 var mtime = new Date(stats.mtime);
+                const dateDif = (curtime.getTime() - mtime.getTime()) / (1000 * 60 * 60 * 24);
                 mtime = `${mtime.getDay()} ${months[mtime.getMonth()]} ${mtime.getFullYear()}`;
                 const size = humanReadableSize(stats.size);
 
-                var pass = false;
+                var pass = true;
                 if(req.body.searchin == "filenames") {
-                    if((file.indexOf(req.body.query) !== -1 && req.body.query) || req.body.query == "") {
-                        pass = true;
+                    if(file.indexOf(req.body.query) === -1 && req.body.query) {
+                        pass = false;
                     }
                 }
                 else if(req.body.searchin == "files") {
-                    if(!req.body.query) {
-                        pass = true;
-                    }
                     if(ext == "txt") {
                         try {
                             const fdata = fs.readFileSync(path.join(pathx,file));
-                            if(fdata.includes(req.body.query)) {
-                                pass = true;
+                            if(!fdata.includes(req.body.query)) {
+                                pass = false;
                             }
                         }
                         catch {}
                     }
 
                 }
+
                 if(!req.body.ftype_image) {
                     if(imageTypes.indexOf(ext) !== -1)
                         pass = false;
@@ -65,17 +65,28 @@ router.post("/", (req, res) => {
                     if(audioTypes.indexOf(ext) !== -1)
                         pass = false;
                 }
+
+                if(dateDif > req.body.dateuploaded) {
+                    pass = false;
+                }
+
+
                 if(pass) {
                   htmltext += `
                   <tr>
                       <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal" class="file-name">${file}</a></td>
                       <td>${mtime}</td>
                       <td>${size}</td>
-                      <td class="text-center">
+                      <td>
                       <a href="/api/files/download?filename=${file}">
                         <i class="fas fa-download" title="Download"></i>
                       </a>
-                        <a href="javascript:void(0)" title="OCR"><i class="fas fa-camera"></i></a>
+                    `;
+                    if(imageTypes.indexOf(ext) !== -1)
+                        htmltext += `
+                      <a href="javascript:void(0)" title="OCR" class="ocr-btn"><i class="fas fa-camera"></i></a>`;
+                  htmltext += `
+                      <a href="javascript:void(0)" title="Delete" class="delete-btn"><i class="fas fa-trash"></i>                      </a>
                       </td>
                   </tr>
                   `;
