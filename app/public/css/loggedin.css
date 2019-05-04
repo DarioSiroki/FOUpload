@@ -88,10 +88,30 @@ table a {
   display: block;
 }
 
-.content .col-8 {
+.content .col-sm-8 {
     background:#FFF;
     padding:15px;
 }
 .fa-trash {
   color: red;
+}
+
+.responsive-heading {
+    display:none;
+}
+
+@media screen and (max-width:768px) {
+    .maxheight {
+        height:auto;
+    }
+    #uploadform table td {
+        display:block;
+        padding:0;
+        margin:0;
+        width:auto;
+    }
+    .responsive-heading {
+        display:block;
+    }
+
 }

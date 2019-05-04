@@ -84,6 +84,11 @@ function loadAjaxSearch(datax) {
             if(o) {
                 $("#filelist").html(o);
                 $("#out").html("");
+                $("table td").each(function() {
+                    var idx = $(this).parent().find("td:not(.responsive-heading)").index($(this));
+                    var text = $(this).closest("table").find("tr th").eq(idx+1).html();
+                    $("<td class='responsive-heading'>"+text+"</td>").insertBefore($(this).next());
+                });
             }
             else {
                 $("#filelist").html("");
@@ -196,3 +201,5 @@ $(document).on("click", ".ocr-btn", function(){
     }
   })
 });
+
+
