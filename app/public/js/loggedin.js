@@ -149,3 +149,7 @@ $(document).on("click", "a.file-name", function(){
     target.html("Sorry but we don't support this type of file yet.")
   }
 })
+
+$(document).on("click", ".stop-playback", function(){
+  document.querySelector("video, audio").pause()
+});
