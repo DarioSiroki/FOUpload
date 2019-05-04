@@ -18,12 +18,20 @@ const detectText = async(imgPath) => {
   return detections[0].description
 }
 
-router.put("/", (req, res) => {
+const verifySession = (req, res, next) => {
+  jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
+    req.isValidSession = e ? false : true;
+    req.userData = data;
+  });
+  next();
+};
+
+router.put("/", verifySession, (req, res) => {
   if(req.isValidSession) {
     if(req.files) {
       const file = req.files.file;
       // Create upload path string
-      const uploadPath = path.join(STORAGE_PATH, String(req.user.id));
+      const uploadPath = path.join(STORAGE_PATH, String(req.userData.id));
       // Create folders recursively if path doesn't exist
       fs.access(uploadPath, e => {
         if(e) fs.mkdirSync(uploadPath, { recursive: true });
@@ -46,7 +54,7 @@ router.put("/", (req, res) => {
     } else {
       if(req.body.folder){
         // Create folders recursively if path doesn't exist
-        const folderPath = path.join(STORAGE_PATH, String(req.user.id), req.body.folder);
+        const folderPath = path.join(STORAGE_PATH, String(req.userData.id), req.body.folder);
         fs.access(folderPath, e => {
           if(e) fs.mkdirSync(folderPath, { recursive: true });
         });
@@ -60,10 +68,10 @@ router.put("/", (req, res) => {
   }
 });
 
-router.delete("/", (req, res) => {
+router.delete("/", verifySession, (req, res) => {
   if(req.isValidSession){
     if(req.body.path){
-      const deletePath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
+      const deletePath = path.join(STORAGE_PATH, String(req.userData.id), req.body.path);
       fs.unlink(deletePath);
       res.send("Deleted successfully");
     } else {
@@ -74,10 +82,10 @@ router.delete("/", (req, res) => {
   }
 });
 
-router.get("/download", (req, res) => {
+router.get("/download", verifySession, (req, res) => {
   const filename = req.query.filename;
 
-  let pathx = path.join(STORAGE_PATH, String(req.user.id), String(filename));
+  let pathx = path.join(STORAGE_PATH, String(req.userData.id), String(filename));
   fs.readFile(pathx, function (err, content) {
       if (err) {
           res.writeHead(400, {'Content-type':'text/html'})

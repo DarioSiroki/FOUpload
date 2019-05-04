@@ -7,13 +7,21 @@ const path = require("path");
 
 const STORAGE_PATH = path.join(__dirname, "..", "..", "storage");
 
-router.post("/", (req, res) => {
-    if(req.isValidSession) {
+const verifySession = (req, res, next) => {
+  jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
+    req.isValidSession = e ? false : true;
+    req.userData = data;
+  });
+  next();
+};
+
+router.post("/", verifySession, (req, res) => {
+    if(req.userData) {
         let htmltext = "";
         let counter = 1;
-        const pathx = path.join(STORAGE_PATH, String(req.user.id));
+        const pathx = path.join(STORAGE_PATH, String(req.userData.id));
         let files = null;
-
+        
         try {
             files = fs.readdirSync(pathx)
         }
