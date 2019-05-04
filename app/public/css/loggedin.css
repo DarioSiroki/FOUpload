@@ -83,3 +83,7 @@ table a {
   margin: 0 auto;
   display: block;
 }
+
+.fa-trash {
+  color: red;
+}

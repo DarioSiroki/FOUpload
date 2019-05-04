@@ -37,7 +37,8 @@ server.use(verifySession);
 const external = [
   "/api/users",
   "/api/files",
-  "/api/ajax/filelist"
+  "/api/ajax/filelist",
+  "/api/ocr"
 ];
 
 external.map(el => {

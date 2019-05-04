@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
                     `;
                     if(imageTypes.indexOf(ext) !== -1)
                         htmltext += `
-                      <a href="javascript:void(0)" title="OCR" class="ocr-btn"><i class="fas fa-camera"></i></a>`;
+                      <a href="javascript:void(0)" title="OCR" class="ocr-btn" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-camera"></i></a>`;
                   htmltext += `
                       <a href="javascript:void(0)" title="Delete" class="delete-btn"><i class="fas fa-trash"></i>                      </a>
                       </td>
