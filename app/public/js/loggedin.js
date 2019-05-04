@@ -5,7 +5,7 @@ $("#uploadform").dropzone({
 
 });
 
-loadAjaxSearch($(".searchform").serialize());
+
 
 $("html").click(function() {
     if(($(event.target).parents(".opensidebar").length == 0) && ($(event.target).parents(".sidebar").length == 0))
@@ -56,6 +56,8 @@ $(".checkbox").click(function() {
 
 });
 
+loadAjaxSearch($(".searchform").serialize());
+
 let cooldown;
 
 $(".searchform").change(function() {
@@ -67,7 +69,7 @@ $("#search").keydown(function() {
     cooldown = setTimeout(function() {
         loadAjaxSearch($(".searchform").serialize());
 
-    }, 500);
+    }, 200);
 })
 
 function loadAjaxSearch(datax) {
@@ -79,7 +81,10 @@ function loadAjaxSearch(datax) {
             if(o) {
                 $("#filelist").html(o);
             }
-            else $("#out").html("You have no files. Drag anywhere to upload.");
+            else {
+                $("#filelist").html("");
+                $("#out").html("You have no files. Drag anywhere to upload.");
+            }
         },
         error:function(o) {
             $("#out").html(o);
