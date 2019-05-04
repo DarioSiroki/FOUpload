@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 const fs = require("fs");
 const path = require("path");
 const vision = require('@google-cloud/vision');
+var rimraf = require("rimraf");
 
 const STORAGE_PATH = path.join(__dirname, "..", "storage");
 
@@ -13,7 +14,15 @@ router.use(fileUpload());
 
 router.put("/", (req, res) => {
   if(req.isValidSession) {
-    if(req.files) {
+    if(req.body.createFolder) {
+      const folderPath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
+      try {
+        fs.mkdirSync(folderPath);
+        res.status(200).send("Folder created");
+      } catch {
+        res.status(200).send("Folder already exists")
+      }
+    } else if (req.files) {
       const file = req.files.file;
       // Create upload path string
       const uploadPath = path.join(STORAGE_PATH, String(req.user.id));
@@ -25,7 +34,7 @@ router.put("/", (req, res) => {
       const filePath = path.join(uploadPath, file.name);
       file.mv(filePath, e => {
         if(e) res.status(500).send("Server error");
-        else res.send("File uploaded");          
+        else res.send("File uploaded");
       });
     } else {
       if(req.body.folder){
@@ -44,11 +53,12 @@ router.put("/", (req, res) => {
   }
 });
 
+
 router.delete("/", (req, res) => {
   if(req.isValidSession){
     if(req.body.path){
       const deletePath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
-      fs.unlinkSync(deletePath);
+      rimraf.sync(deletePath);
       res.send("Deleted successfully");
     } else {
       res.status(403).send("Invalid request");

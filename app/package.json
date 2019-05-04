@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.11",
+    "rimraf": "^2.6.3",
     "sequelize": "^5.7.6"
   }
 }

@@ -14,23 +14,41 @@ const humanReadableSize = (size) => {
   const i = Math.floor( Math.log(size) / Math.log(1024) );
   return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
 }
+const isDir = (path) => {
+    try {
+        const stat = fs.lstatSync(path);
+        return stat.isDirectory();
+    } catch (e) {
+        // lstatSync throws an error if path doesn't exist
+        return false;
+    }
+}
 
 router.post("/", (req, res) => {
     if(req.user) {
         let htmltext = "";
         let counter = 1;
-        const pathx = path.join(STORAGE_PATH, String(req.user.id));
-        let files = null;
+        const pathx = path.join(STORAGE_PATH, String(req.user.id), req.body.path || "");
 
         try {
-            files = fs.readdirSync(pathx)
+          files = fs.readdirSync(pathx);
         }
-        catch (err) {}
+        catch (err) {
+          files = [];
+        }
+        files = files.map(e => ({
+            name: e,
+            isDir: isDir(path.join(STORAGE_PATH, String(req.user.id), req.body.path || "", e))
+        }))
+        folders = files.filter(e=>e.isDir);
+        files = files.filter(e=>!folders.includes(e));
+        files = folders.concat(files);
         if(files) {
+          console.log(files)
             const curtime = new Date();
             files.forEach(file => {
-                const ext = file.split('.').pop();
-                var stats = fs.statSync(path.join(pathx,file));
+                const ext = file.name.split('.').pop();
+                var stats = fs.statSync(path.join(pathx,file.name));
                 var mtime = new Date(stats.mtime);
                 const dateDif = (curtime.getTime() - mtime.getTime()) / (1000 * 60 * 60 * 24);
                 mtime = `${mtime.getDate()} ${months[mtime.getMonth()]} ${mtime.getFullYear()}`;
@@ -38,14 +56,14 @@ router.post("/", (req, res) => {
 
                 var pass = true;
                 if(req.body.searchin == "filenames") {
-                    if(file.indexOf(req.body.query) === -1 && req.body.query) {
+                    if(file.name.indexOf(req.body.query) === -1 && req.body.query) {
                         pass = false;
                     }
                 }
                 else if(req.body.searchin == "files") {
                     if(ext == "txt") {
                         try {
-                            const fdata = fs.readFileSync(path.join(pathx,file));
+                            const fdata = fs.readFileSync(path.join(pathx,file.name));
                             if(!fdata.includes(req.body.query)) {
                                 pass = false;
                             }
@@ -82,12 +100,23 @@ router.post("/", (req, res) => {
                         }
                     }
                 }
-
-
+                if(req.body.path) pass = true;
                 if(pass) {
                   htmltext += `
                   <tr>
-                      <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal" class="file-name">${file}</a></td>
+                      <td>
+                      ${
+                        file.isDir ?
+                        `<i class="fas fa-folder"></i>`:
+                        `<i class="fas fa-file"></i>`
+                      }
+                      <td><a href="javascript:void(0)" ${
+                        file.isDir ?
+                        `class="folder-name"`:
+                        `data-toggle="modal" data-target="#exampleModal"
+                         class="file-name"`
+                      }
+                      >${file.name}</a></td>
                       <td>${mtime}</td>
                       <td>${size}</td>
                       <td>
