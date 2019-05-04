@@ -79,8 +79,6 @@ $("#search,#mbsize").keydown(function() {
 })
 
 function loadAjaxSearch(datax) {
-  console.log($("input#path").val())
-
     $.ajax({
         url:"/api/ajax/filelist",
         method:"POST",
@@ -170,6 +168,8 @@ let handleArrow = () => {
   }
 }
 
+handleArrow();
+
 $(document).on("click", ".folder-name", function(){
   let path = $("input#path").val();
   path = path + $(this).html() + "/";
@@ -218,7 +218,6 @@ $(document).on("click", ".ocr-btn", function(){
   let target = $("div.modal-body");
   let path = $("input#path").val();
   path = path + $(this).parents("tr").find("td:nth-child(3) a").html();
-  console.log(path);
   let loader = `
   <div class="spinner-border text-info" role="status">
     <span class="sr-only">Loading...</span>
