@@ -5,9 +5,8 @@ const server = express();
 const fs = require('fs')
 const path = require("path");
 
-router.use("/", express.static("../..storage"));
 
-router.get("/", (req, res) => {
+router.get(/storage/, (req, res) => {
   console.log("HI");
 });
 

@@ -6,6 +6,7 @@ require("dotenv").config();
 const server = express();
 const fs = require('fs')
 const path = require("path");
+const verifyStorageAccess = require("./api/ajax/verifyStorageAccess");
 
 
 const STORAGE_PATH = path.join(__dirname, "storage");
@@ -28,16 +29,7 @@ const verifySession = (req, res, next) => {
     req.user = e ? "" : data;
     req.isValidSession = e ? false : true;
   });
-  if(req.originalUrl.indexOf("/download")>-1 || req.originalUrl.indexOf("/storage")>-1){
-    if(!req.isValidSession) {
-      res.status(403).send("Authentication error");
-    } else if(req.originalUrl.indexOf("/storage")>-1){
-      const reqId = req.originalUrl.split("/")[2]
-      if(parseInt(reqId)===parseInt(req.user.id)) next();
-    }
-  } else {
-    next();
-  }
+  next();
 };
 server.use(verifySession);
 
@@ -45,17 +37,16 @@ server.use(verifySession);
 const external = [
   "/api/users",
   "/api/files",
-  "/api/ajax/filelist"
+  "/api/ajax/filelist",
 ];
 
 external.map(el => {
   server.use(el, require('.'+el));
 });
-console.log(__dirname + "/api/ajax/exposeStorage");
-server.use("/storage", require(__dirname + "/api/ajax/exposeStorage"));
 
 // Public files route
 server.use(express.static("public"));
+server.use("/storage", verifyStorageAccess, express.static("storage"));
 
 // Handlebars routes
 server.get("/", (req, res) =>{
@@ -64,7 +55,6 @@ server.get("/", (req, res) =>{
     always: req.user,
   });
 });
-
 
 const PORT = process.env.PORT || 5000;
 
