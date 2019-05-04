@@ -27,9 +27,11 @@ server.use(cookieParser());
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.user = e ? "" : data;
+    req.isValidSession = e ? false : true;
   });
   next();
 };
+server.use(verifySession);
 
 // API routes
 const external = [
