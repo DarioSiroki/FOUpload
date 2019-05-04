@@ -3,27 +3,51 @@ const router = express.Router();
 const jwt = require("jsonwebtoken")
 const fileUpload = require('express-fileupload');
 const fs = require("fs");
+const path = require("path");
 
 router.use(fileUpload());
 
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
-    req.allow = e ? false : true;
+    req.isValidSession = e ? false : true;
     req.userData = data;
   });
   next();
 };
 
 router.put("/", verifySession, (req, res) => {
-  if(req.allow) {
+  if(req.isValidSession) {
     if(req.files) {
-
+      const file = req.files.file;
+      // Create upload path string
+      const uploadPath = path.join(__dirname, "..", "storage", String(req.userData.id));
+      // Create folders recursively if path doesn't exist
+      fs.access(uploadPath, e => {
+        if(e) fs.mkdirSync(uploadPath, { recursive: true });
+      });
+      // Create file in upload destination
+      const filePath = path.join(uploadPath, file.name);
+      file.mv(filePath, e => {
+        if(e) res.status(500).send("Server error");
+        else res.send("File uploaded");
+      });
     } else {
-      res.status(403).send("Invalid request, no file received")
+      if(req.body.folder){
+        // Create folders recursively if path doesn't exist
+        const folderPath = path.join(__dirname, "..", "storage", String(req.userData.id), req.body.folder);
+        fs.access(folderPath, e => {
+          if(e) fs.mkdirSync(folderPath, { recursive: true });
+        });
+        res.send("Folder created");
+      } else {
+        res.status(403).send("Invalid request, no file received");
+      }
     }
   } else {
     res.status(403).send("Authentication error");
   }
 });
+
+
 
 module.exports = router;
