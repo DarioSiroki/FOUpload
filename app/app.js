@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const sequelize = require("./config/DatabaseHandler");
 require("dotenv").config();
 const server = express();
+const fs = require('fs')
 
 // Handlebars middleware
 server.engine("handlebars", exphbs({ defaultLayout: "main", partialsDir: __dirname + '/views/partials/' }));
@@ -35,31 +36,32 @@ server.use(express.static("public"));
 // Handlebars routes
 server.get("/", verifySession, (req, res) => {
   if(req.user) {
-    sequelize.query(`SELECT * from files where user_id=:id`, { 
-      replacements: {
-          id: req.user.id
-      },
-      type: sequelize.QueryTypes.SELECT
-    })
-    .then(data=>{
-      let html = "";
-      data.map(el => {
-        let counter = 1;
-        html += `
-          <tr>
-              <th>${counter++}</th>
-              <td>${el.path}</td>
-              <td>${el.date}</td>
-              <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
-          </tr>
-        `;
+      let htmltext = "";
+      let counter = 1;
+      let path = __dirname  + `/storage/${req.user.id}/`;
+      fs.readdir(path, (err, files) => {
+        files.forEach(file => {
+          var stats = fs.statSync(path + file);
+          var mtime = new Date(stats.mtime);
+          htmltext += `
+            <tr>
+                <th>${counter++}</th>
+                <td>${file}</td>
+                <td>${mtime}</td>
+                <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
+            </tr>
+          `;          
+        });
+
+        res.render("loggedin", {
+          title: "FOUpload",
+          always: req.user,
+          filetable: htmltext
+        });
       });
-      res.render("loggedin", {
-        title: "FOUpload",
-        always: req.user,
-        filetable: html
-      });
-    });
+
+      
+      
   }
   else {
     res.render("home", {
