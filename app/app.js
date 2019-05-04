@@ -33,8 +33,8 @@ server.use(express.static("public"));
 
 // Handlebars routes
 server.get("/", verifySession, (req, res) => {
-  res.render("home", {
-    title: "Home",
+  res.render((req.user)?"loggedin":"home", {
+    title: "FOUpload",
     always: req.user
   });
 });
