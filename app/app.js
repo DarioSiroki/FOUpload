@@ -34,10 +34,40 @@ server.use(express.static("public"));
 
 // Handlebars routes
 server.get("/", verifySession, (req, res) => {
-  res.render((req.user)?"loggedin":"home", {
-    title: "FOUpload",
-    always: req.user
-  });
+  if(req.user) {
+    sequelize.query(`SELECT * from files where user_id=:id`, { 
+      replacements: {
+          id: req.user.id
+      },
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(data=>{
+      let html = "";
+      data.map(el => {
+        let counter = 1;
+        html += `
+          <tr>
+              <th>${counter++}</th>
+              <td>${el.path}</td>
+              <td>${el.date}</td>
+              <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
+          </tr>
+        `;
+      });
+      res.render("loggedin", {
+        title: "FOUpload",
+        always: req.user,
+        filetable: html
+      });
+    });
+  }
+  else {
+    res.render("home", {
+      title: "FOUpload",
+      always: req.user,
+    });
+  }
+  
 });
 
 
