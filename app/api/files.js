@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const fileUpload = require('express-fileupload');
 const fs = require("fs");
 const path = require("path");
+const vision = require('@google-cloud/vision');
 
 const STORAGE_PATH = path.join(__dirname, "..", "storage");
 
@@ -11,7 +12,6 @@ const STORAGE_PATH = path.join(__dirname, "..", "storage");
 router.use(fileUpload());
 
 const detectText = async(imgPath) => {
-  const vision = require('@google-cloud/vision');
   const client = new vision.ImageAnnotatorClient();
   const [result] = await client.textDetection(imgPath);
   const detections = result.textAnnotations;
