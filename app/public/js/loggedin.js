@@ -2,6 +2,9 @@ $("#uploadform").dropzone({
     dictDefaultMessage: "Drag anywhere to upload",
     url: "/api/files/",
     method:"PUT",
+    data: {
+      path: $("input#path").val()
+    },
     success: function() {
         location.reload();
     }
@@ -76,6 +79,8 @@ $("#search,#mbsize").keydown(function() {
 })
 
 function loadAjaxSearch(datax) {
+  console.log($("input#path").val())
+
     $.ajax({
         url:"/api/ajax/filelist",
         method:"POST",
@@ -155,6 +160,37 @@ $(document).on("click", "a.file-name", function(){
   }
 })
 
+let handleArrow = () => {
+  let folderArrow = $("#folder-arrow");
+  let path = $("input#path").val();
+  if(path!="/"){
+    folderArrow.css("display", "inline")
+  } else {
+    folderArrow.css("display", "none")
+  }
+}
+
+$(document).on("click", ".folder-name", function(){
+  let path = $("input#path").val();
+  path = path + $(this).html() + "/";
+  $("input#path").val(path);
+  loadAjaxSearch("path=" + path);
+  handleArrow();
+});
+
+$(document).on("click", "#folder-arrow", function(){
+  let path = $("input#path").val();
+  path = path.split("/");
+  path.pop();
+  path.pop();
+  path = path.join("/");
+  path = path ? path:"/";
+  if(path!="/") path = path[path.length]==="/" ? path:path+="/";
+  $("input#path").val(path);
+  loadAjaxSearch("path=" + path);
+  handleArrow();
+});
+
 $(document).on("click", ".stop-playback", function(){
   let target = $("div.modal-body");
   target.html("");
@@ -164,7 +200,8 @@ $(document).on("click", ".stop-playback", function(){
 });
 
 $(document).on("click", ".delete-btn", function(){
-  let path = $(this).parents("tr").find("td:nth-child(1) a").html()
+  let path = $("input#path").val();
+  path += $(this).parents("tr").find("td:nth-child(3) a").html();
   $.ajax({
     url: "/api/files",
     data: {
@@ -179,7 +216,9 @@ $(document).on("click", ".delete-btn", function(){
 
 $(document).on("click", ".ocr-btn", function(){
   let target = $("div.modal-body");
-  let path = $(this).parents("tr").find("td:nth-child(1) a").html()
+  let path = $("input#path").val();
+  path = path + $(this).parents("tr").find("td:nth-child(3) a").html();
+  console.log(path);
   let loader = `
   <div class="spinner-border text-info" role="status">
     <span class="sr-only">Loading...</span>
@@ -202,4 +241,20 @@ $(document).on("click", ".ocr-btn", function(){
   })
 });
 
-
+$(document).on("submit", "#add-folder-form", function(e){
+  e.preventDefault();
+  let path = $("input#path").val();
+  path += $("#add-folder-form input").val();
+  $.ajax({
+    url: "/api/files",
+    type: "PUT",
+    data: {
+      createFolder: true,
+      path: path
+    },
+    success: (data)=> {
+      loadAjaxSearch("path=" + $("input#path").val());
+    }
+  })
+  return false;
+});
