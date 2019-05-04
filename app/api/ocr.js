@@ -10,7 +10,11 @@ const detectText = async(imgPath) => {
   const client = new vision.ImageAnnotatorClient();
   const [result] = await client.textDetection(imgPath);
   const detections = result.textAnnotations;
-  return detections[0].description;
+  try{
+    return detections[0].description;
+  } catch {
+    return "Could not process image";
+  }
 }
 
 router.post("/", async(req, res) => {
@@ -18,7 +22,6 @@ router.post("/", async(req, res) => {
     if(req.body.path) {
       const uploadPath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
       const text = await detectText(uploadPath);
-      console.log(text);
       res.send(text);
     } else {
       res.status(403).send("Invalid request");
