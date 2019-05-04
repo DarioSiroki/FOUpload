@@ -10,15 +10,15 @@ server.engine("handlebars", exphbs({ defaultLayout: "main", partialsDir: __dirna
 server.set("view engine", "handlebars");
 
 // Body parser middleware
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
+server.use(express.json({ limit: "50mb" }));
+server.use(express.urlencoded({ extended: false, limit: '50mb', parameterLimit: 1000000}));
 
 // Cookie parse middleware
 const cookieParser = require("cookie-parser");
 server.use(cookieParser());
 
 // Session verification function
-let verifySession = (req, res, next) => {
+const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.user = e ? "" : data;
   });
@@ -27,6 +27,7 @@ let verifySession = (req, res, next) => {
 
 // API routes
 server.use("/api/users", require("./api/users"));
+server.use("/api/files", require("./api/files"));
 
 // Public files route
 server.use(express.static("public"));
