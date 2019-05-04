@@ -2,6 +2,7 @@
     <div class="col-8 offset-2 maxheight">
         <h1 class="text-center">My files</h1>
         <form id="uploadform" class="maxheight">
+            {{#if filetable}}
             <table class="table">
                 <thead>
                     <tr>
@@ -12,22 +13,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>dokument.txt</td>
-                        <td>4 May 2019</td>
-                        <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>asd.docx</td>
-                        <td>4 May 2019</td>
-                        <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
-                    </tr>
+                    {{{filetable}}}
                 </tbody>
             </table>
+            {{else}}
+                <p class="text-center">You have no files. Drag or click anywhere to upload. </p>
+            {{/if}}
             <input type="hidden" accept="image/*">
 
+            
         </form>
 
     </div>
