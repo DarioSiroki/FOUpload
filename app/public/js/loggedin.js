@@ -1,4 +1,4 @@
-$("#uploadform").dropzone({ 
+$("#uploadform").dropzone({
     dictDefaultMessage: "Drag anywhere to upload",
     url: "/api/files/",
     method:"PUT"
@@ -53,7 +53,7 @@ $(".checkbox").click(function() {
         $("input[name='"+$inputname+"'][value='"+$inputvalue+"']").prop("checked",true);
     }
     $(".searchform").change();
-    
+
 });
 
 let cooldown;
@@ -86,3 +86,26 @@ function loadAjaxSearch(datax) {
         }
     });
 }
+
+$(document).on("click", "a.file-name", function(){
+  let target = $("div.modal-body");
+  let filename = $(this).html();
+  let extension = filename.split('.').pop().toLowerCase();
+  let imgs = ["png", "jpg", "jpeg", "tiff"];
+  let audio = ["mp3", "wav", "ogg"];
+  if(imgs.includes(extension)) {
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+        html = `<img src="${data}"></img>`;
+        target.html(html);
+      }
+    })
+  } else if(imgs.includes(extension)){
+    console.log("hi");
+  } else if(extension==="txt"){
+    console.log("hi");
+  } else {
+    target.html("Sorry but we don't support this type of file yet.")
+  }
+})

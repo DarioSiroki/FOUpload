@@ -7,24 +7,17 @@ const path = require("path");
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const STORAGE_PATH = path.join(__dirname, "..", "..", "storage");
 
-const verifySession = (req, res, next) => {
-  jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
-    req.isValidSession = e ? false : true;
-    req.userData = data;
-  });
-  next();
-};
 
 const humanReadableSize = (size) => {
   const i = Math.floor( Math.log(size) / Math.log(1024) );
   return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
 }
 
-router.post("/", verifySession, (req, res) => {
-    if(req.userData) {
+router.post("/", (req, res) => {
+    if(req.user) {
         let htmltext = "";
         let counter = 1;
-        const pathx = path.join(STORAGE_PATH, String(req.userData.id));
+        const pathx = path.join(STORAGE_PATH, String(req.user.id));
         let files = null;
 
         try {
@@ -40,7 +33,7 @@ router.post("/", verifySession, (req, res) => {
                 const size = humanReadableSize(stats.size);
                 htmltext += `
                 <tr>
-                    <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">${file}</a></td>
+                    <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal" class="file-name">${file}</a></td>
                     <td>${mtime}</td>
                     <td>${size}</td>
                     <td class="text-center">
