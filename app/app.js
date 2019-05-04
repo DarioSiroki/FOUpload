@@ -27,33 +27,41 @@ server.use(cookieParser());
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.user = e ? "" : data;
-    req.isValidSession = e ? false : true;
   });
   next();
 };
-server.use(verifySession);
 
 // API routes
 const external = [
+<<<<<<< HEAD
   "/api/users",
   "/api/files",
   "/api/ajax/filelist",
+=======
+  "/api/users", 
+  "/api/files", 
+  "/api/ajax/filelist"
+>>>>>>> a3d765a0d8d743cbfa50e70dc54f70c6391b1c4b
 ];
 
 external.map(el => {
   server.use(el, require('.'+el));
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> a3d765a0d8d743cbfa50e70dc54f70c6391b1c4b
 
 // Public files route
 server.use(express.static("public"));
 server.use("/storage", verifyStorageAccess, express.static("storage"));
 
 // Handlebars routes
-server.get("/", (req, res) =>{
-  res.render((req.user)?"loggedin":"home", {
-    title: "FOUpload",
-    always: req.user,
-  });
+server.get("/", verifySession, (req, res) => {
+    res.render((req.user)?"loggedin":"home", {
+      title: "FOUpload",
+      always: req.user,
+    });
 });
 
 const PORT = process.env.PORT || 5000;
