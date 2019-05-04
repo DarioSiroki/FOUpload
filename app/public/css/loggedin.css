@@ -1,4 +1,3 @@
-
 html,body {
     height:100%;
 }
@@ -69,4 +68,18 @@ html,body {
 
 table a {
   text-decoration: none!important;
+}
+
+.modal img {
+  width: 100%;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.modal-body {
+  margin: 0 auto;
+  display: block;
 }
