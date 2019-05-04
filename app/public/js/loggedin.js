@@ -153,6 +153,23 @@ $(document).on("click", "a.file-name", function(){
               `);
       }
     })
+  } else if(extension==="pdf"){
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+        PDFObject.embed(data, target);
+        target.css("width", "100%")
+        target.css("height", "800px")
+      }
+    })
+  } else if(extension==="docx"){
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+        html = `<iframe class="doc" src="https://docs.google.com/gview?url=${window.location + data}"></iframe>`;
+        target.html(html);
+      }
+    })
   } else {
     target.html("Sorry but we don't support this type of file yet.")
   }
