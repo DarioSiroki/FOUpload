@@ -26,19 +26,44 @@ router.post("/", verifySession, (req, res) => {
             files = fs.readdirSync(pathx)
         }
         catch (err) {}
-
         if(files) {
             files.forEach(file => {
                 var stats = fs.statSync(path.join(pathx,file));
                 var mtime = new Date(stats.mtime);
-                htmltext += `
-                <tr>
-                    <th>${counter++}</th>
-                    <td>${file}</td>
-                    <td>${mtime}</td>
-                    <td class="text-center"><a href="/api/files/download?filename=${file}"><i class="fas fa-download"></i></a></td>
-                </tr>
-                `;
+                var pass = false;
+                console.log(req.body.searchin);
+                if(req.body.searchin == "filenames") {
+                    if((file.indexOf(req.body.query) !== -1 && req.body.query) || req.body.query == "") {
+                        pass = true;
+                    }
+                }
+                else if(req.body.searchin == "files") {
+                    const ext = file.split('.').pop();
+                    if(!req.body.query) {
+                        pass = true;
+                    }
+                    if(ext == "txt") {
+                        try {
+                            const fdata = fs.readFileSync(path.join(pathx,file));
+                            if(fdata.includes(req.body.query)) {
+                                pass = true;
+                            }
+                        }
+                        catch {}
+                    }
+
+                }
+                if(pass) {
+                    htmltext += `
+                    <tr>
+                        <th>${counter++}</th>
+                        <td>${file}</td>
+                        <td>${mtime}</td>
+                        <td class="text-center"><a href="/api/files/download?filename=${file}"><i class="fas fa-download"></i></a></td>
+                    </tr>
+                    `;
+                }
+        
             });
         }
         res.send(htmltext);
