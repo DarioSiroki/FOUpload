@@ -6,6 +6,7 @@ require("dotenv").config();
 const server = express();
 const fs = require('fs')
 const path = require("path");
+const verifyStorageAccess = require("./api/ajax/verifyStorageAccess");
 
 
 const STORAGE_PATH = path.join(__dirname, "storage");
@@ -32,8 +33,8 @@ const verifySession = (req, res, next) => {
 
 // API routes
 const external = [
-  "/api/users", 
-  "/api/files", 
+  "/api/users",
+  "/api/files",
   "/api/ajax/filelist"
 ];
 
@@ -41,9 +42,9 @@ external.map(el => {
   server.use(el, require('.'+el));
 });
 
-
 // Public files route
 server.use(express.static("public"));
+server.use("/storage", verifyStorageAccess, express.static("storage"));
 
 // Handlebars routes
 server.get("/", verifySession, (req, res) => {
@@ -52,7 +53,6 @@ server.get("/", verifySession, (req, res) => {
       always: req.user,
     });
 });
-
 
 const PORT = process.env.PORT || 5000;
 
