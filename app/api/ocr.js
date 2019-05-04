@@ -31,10 +31,4 @@ router.post("/", async(req, res) => {
   }
 });
 
-/*
-fs.writeFileSync(filePath + ".txt", text, (e) => {
-  if(e) console.log(e);
-})
-*/
-
 module.exports = router;

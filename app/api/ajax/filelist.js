@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken")
 const fs = require("fs");
 const path = require("path");
+const getIconForExtension = require("font-awesome-filetypes").getIconForExtension;
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const STORAGE_PATH = path.join(__dirname, "..", "..", "storage");
@@ -47,6 +48,7 @@ router.post("/", (req, res) => {
             const curtime = new Date();
             files.forEach(file => {
                 const ext = file.name.split('.').pop();
+                const icon = getIconForExtension(ext)
                 var stats = fs.statSync(path.join(pathx,file.name));
                 var mtime = new Date(stats.mtime);
                 const dateDif = (curtime.getTime() - mtime.getTime()) / (1000 * 60 * 60 * 24);
@@ -104,11 +106,7 @@ router.post("/", (req, res) => {
                   htmltext += `
                   <tr>
                       <td>
-                      ${
-                        file.isDir ?
-                        `<i class="fas fa-folder"></i>`:
-                        `<i class="fas fa-file"></i>`
-                      }
+                      ${icon}
                       <td><a href="javascript:void(0)" ${
                         file.isDir ?
                         `class="folder-name"`:

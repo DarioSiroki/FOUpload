@@ -6,6 +6,7 @@ const verifyStorageAccess = (req, res, next) => {
       let pcs = req.originalUrl.split("/");
       pcs.shift();
       const redirect = path.join(pcs.shift(), String(req.user.id), ...pcs);
+      console.log(redirect)
       res.send(redirect);
     } else {
       next();
