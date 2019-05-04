@@ -45,7 +45,9 @@ router.put("/", verifySession, (req, res) => {
           // Create text file of image
           if(req.body.ocr) {
             const text = detectText(uploadPath);
-            fs.writeFileSync(filePath + ".txt", text, (e) => if(e) console.log(e));
+            fs.writeFileSync(filePath + ".txt", text, (e) => {
+              if(e) console.log(e);
+            })
           }
         };
       });

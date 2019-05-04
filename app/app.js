@@ -33,7 +33,6 @@ const verifySession = (req, res, next) => {
 // API routes
 server.use("/api/users", require("./api/users"));
 server.use("/api/files", require("./api/files"));
-server.use("/api/ocr", require("./api/ocr"));
 
 // Public files route
 server.use(express.static("public"));
@@ -45,7 +44,7 @@ server.get("/", verifySession, (req, res) => {
       let counter = 1;
       const pathx = path.join(STORAGE_PATH, String(req.user.id));
       let files = null;
-      
+
       try {
         files = fs.readdirSync(pathx)
       }
