@@ -33,6 +33,7 @@ const verifySession = (req, res, next) => {
 // API routes
 server.use("/api/users", require("./api/users"));
 server.use("/api/files", require("./api/files"));
+server.use("/api/ocr", require("./api/ocr"));
 
 // Public files route
 server.use(express.static("public"));
@@ -61,7 +62,7 @@ server.get("/", verifySession, (req, res) => {
                 <td>${mtime}</td>
                 <td class="text-center"><a href="/api/files/download?filename=${file}"><i class="fas fa-download"></i></a></td>
             </tr>
-          `;          
+          `;
         });
       }
 
@@ -71,8 +72,8 @@ server.get("/", verifySession, (req, res) => {
         filetable: htmltext
       });
 
-      
-      
+
+
   }
   else {
     res.render("home", {
@@ -80,7 +81,7 @@ server.get("/", verifySession, (req, res) => {
       always: req.user,
     });
   }
-  
+
 });
 
 
