@@ -6,6 +6,7 @@ const path = require("path");
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const STORAGE_PATH = path.join(__dirname, "..", "..", "storage");
+const imageTypes = ["png","jpg","jpeg","gif","tiff","bmp","webm"];
 
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
@@ -33,20 +34,19 @@ router.post("/", verifySession, (req, res) => {
         catch (err) {}
         if(files) {
             files.forEach(file => {
+                const ext = file.split('.').pop();
                 var stats = fs.statSync(path.join(pathx,file));
                 var mtime = new Date(stats.mtime);
                 mtime = `${mtime.getDay()} ${months[mtime.getMonth()]} ${mtime.getFullYear()}`;
                 const size = humanReadableSize(stats.size);
 
                 var pass = false;
-                console.log(req.body.searchin);
                 if(req.body.searchin == "filenames") {
                     if((file.indexOf(req.body.query) !== -1 && req.body.query) || req.body.query == "") {
                         pass = true;
                     }
                 }
                 else if(req.body.searchin == "files") {
-                    const ext = file.split('.').pop();
                     if(!req.body.query) {
                         pass = true;
                     }
@@ -61,10 +61,14 @@ router.post("/", verifySession, (req, res) => {
                     }
 
                 }
+                if(!req.body.ftype_image) {
+                    if(imageTypes.indexOf(ext) !== -1)
+                        pass = false;
+                }
                 if(pass) {
                   htmltext += `
                   <tr>
-                      <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal">${file}</a></td>
+                      <td><a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModal" class="file-name">${file}</a></td>
                       <td>${mtime}</td>
                       <td>${size}</td>
                       <td class="text-center">

@@ -80,6 +80,7 @@ function loadAjaxSearch(datax) {
         success:function(o)  {
             if(o) {
                 $("#filelist").html(o);
+                $("#out").html("");
             }
             else {
                 $("#filelist").html("");
