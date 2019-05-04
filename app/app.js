@@ -31,57 +31,27 @@ const verifySession = (req, res, next) => {
 };
 
 // API routes
-server.use("/api/users", require("./api/users"));
-server.use("/api/files", require("./api/files"));
-server.use("/api/ocr", require("./api/ocr"));
+const external = [
+  "/api/users", 
+  "/api/files", 
+  "/api/ocr",
+  "/api/ajax/filelist"
+];
+
+external.map(el => {
+  server.use(el, require('.'+el));
+});
+
 
 // Public files route
 server.use(express.static("public"));
 
 // Handlebars routes
 server.get("/", verifySession, (req, res) => {
-  if(req.user) {
-      let htmltext = "";
-      let counter = 1;
-      const pathx = path.join(STORAGE_PATH, String(req.user.id));
-      let files = null;
-      
-      try {
-        files = fs.readdirSync(pathx)
-      }
-      catch (err) {}
-
-      if(files) {
-        files.forEach(file => {
-          var stats = fs.statSync(path.join(pathx,file));
-          var mtime = new Date(stats.mtime);
-          htmltext += `
-            <tr>
-                <th>${counter++}</th>
-                <td>${file}</td>
-                <td>${mtime}</td>
-                <td class="text-center"><a href="/api/files/download?filename=${file}"><i class="fas fa-download"></i></a></td>
-            </tr>
-          `;
-        });
-      }
-
-      res.render("loggedin", {
-        title: "FOUpload",
-        always: req.user,
-        filetable: htmltext
-      });
-
-
-
-  }
-  else {
-    res.render("home", {
+    res.render((req.user)?"loggedin":"home", {
       title: "FOUpload",
       always: req.user,
     });
-  }
-
 });
 
 

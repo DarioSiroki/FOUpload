@@ -2,9 +2,9 @@
     <div class="col-8 offset-2 maxheight">
         <h1 class="text-center">My files</h1>
         <form id="uploadform" class="maxheight">
-            {{#if filetable}}
             <input class="form-control mr-sm-2" type="search" placeholder="Search files..." aria-label="Search" name="query">
             <table class="table">
+                
                 <thead>
                     <tr>
                     <th scope="col">#</th>
@@ -13,13 +13,11 @@
                     <th scope="col" class="text-center">Options</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {{{filetable}}}
+                <tbody id="filelist">
                 </tbody>
             </table>
-            {{else}}
-                <p class="text-center">You have no files. Drag or click anywhere to upload. </p>
-            {{/if}}
+            
+            <p id="out" class="text-center"></p>
             <input type="hidden" accept="image/*">
         </form>
 

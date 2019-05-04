@@ -5,7 +5,7 @@ const sequelize = require("../config/DatabaseHandler")
 const sha512 = require('js-sha512').sha512;
 
 // Cookie parse middleware
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 router.post("/login", (req, res) => {
