@@ -4,7 +4,6 @@ $("#uploadform").dropzone({
     method:"PUT"
 });
 
-<<<<<<< HEAD
 loadAjaxSearch($(".searchform").serialize());
 
 $("html").click(function() {
@@ -95,18 +94,3 @@ $(document).on("click", ".image-modal", function() {
   $(".modal-body").html(imgPath);
 });
 >>>>>>> d8091196d38b12596d9ce5484665fc6c23791d49
-=======
-$.ajax({
-    url:"/api/ajax/filelist",
-    method:"POST",
-    success:function(o)  {
-        if(o) {
-            $("#filelist").html(o);
-        }
-        else $("#out").html("You have no files. Drag anywhere to upload.");
-    },
-    error:function(o) {
-        $("#out").html(o);
-    }
-});
->>>>>>> parent of 06bcf27... search
