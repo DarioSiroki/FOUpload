@@ -26,14 +26,16 @@ server.use(cookieParser());
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
     req.user = e ? "" : data;
+    req.isValidSession = e ? false : true;
   });
   next();
 };
+server.use(verifySession);
 
 // API routes
 const external = [
-  "/api/users", 
-  "/api/files", 
+  "/api/users",
+  "/api/files",
   "/api/ajax/filelist"
 ];
 
@@ -46,11 +48,11 @@ external.map(el => {
 server.use(express.static("public"));
 
 // Handlebars routes
-server.get("/", verifySession, (req, res) => {
-    res.render((req.user)?"loggedin":"home", {
-      title: "FOUpload",
-      always: req.user,
-    });
+server.get("/", (req, res) =>{
+  res.render((req.user)?"loggedin":"home", {
+    title: "FOUpload",
+    always: req.user,
+  });
 });
 
 
