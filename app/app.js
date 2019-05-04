@@ -72,7 +72,7 @@ server.get("/settings", verifySession, (req, res) => {
       getSize(path.join(STORAGE_PATH, String(req.user.id)), (err, size) => {     
         fs.readdir(path.join(STORAGE_PATH, String(req.user.id)), (err, files) => {
           const mbsize = (size / 1024 / 1024).toFixed(0);
-          const filesfolders = files.length;
+          const filesfolders = (files)?files.length:0;
           res.render("settings", {
             title: "FOUpload - User Settings",
             always: req.user,

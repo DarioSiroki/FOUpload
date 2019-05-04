@@ -104,8 +104,20 @@ html,body {
   padding:40px;
 }
 
+#footer {
+  background:#333;
+  text-align:center;
+  padding:30px;
+}
+
+#footer p {
+  margin: 0 auto;
+  font-size:14px;
+  color:#ddd;
+}
+
 @media screen and (max-width:1024px) {
   .cats .col-md-4 {
-    padding:15px;
+    padding:25px;
   }
 }
