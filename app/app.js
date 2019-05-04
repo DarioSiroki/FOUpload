@@ -5,6 +5,10 @@ const sequelize = require("./config/DatabaseHandler");
 require("dotenv").config();
 const server = express();
 const fs = require('fs')
+const path = require("path");
+
+
+const STORAGE_PATH = path.join(__dirname, "storage");
 
 // Handlebars middleware
 server.engine("handlebars", exphbs({ defaultLayout: "main", partialsDir: __dirname + '/views/partials/' }));
@@ -38,26 +42,33 @@ server.get("/", verifySession, (req, res) => {
   if(req.user) {
       let htmltext = "";
       let counter = 1;
-      let path = __dirname  + `/storage/${req.user.id}/`;
-      fs.readdir(path, (err, files) => {
+      const pathx = path.join(STORAGE_PATH, String(req.user.id));
+      let files = null;
+      
+      try {
+        files = fs.readdirSync(pathx)
+      }
+      catch (err) {}
+
+      if(files) {
         files.forEach(file => {
-          var stats = fs.statSync(path + file);
+          var stats = fs.statSync(path.join(pathx,file));
           var mtime = new Date(stats.mtime);
           htmltext += `
             <tr>
                 <th>${counter++}</th>
                 <td>${file}</td>
                 <td>${mtime}</td>
-                <td class="text-center"><a href="javascript:void(0)"><i class="fas fa-download"></i></a></td>
+                <td class="text-center"><a href="/api/files/download?filename=${file}"><i class="fas fa-download"></i></a></td>
             </tr>
           `;          
         });
+      }
 
-        res.render("loggedin", {
-          title: "FOUpload",
-          always: req.user,
-          filetable: htmltext
-        });
+      res.render("loggedin", {
+        title: "FOUpload",
+        always: req.user,
+        filetable: htmltext
       });
 
       

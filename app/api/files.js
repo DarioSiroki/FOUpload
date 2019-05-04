@@ -65,4 +65,20 @@ router.delete("/", verifySession, (req, res) => {
   }
 });
 
+router.get("/download", verifySession, (req, res) => {
+  const filename = req.query.filename;
+
+  let pathx = path.join(STORAGE_PATH, String(req.userData.id), String(filename));
+  fs.readFile(pathx, function (err, content) {
+      if (err) {
+          res.writeHead(400, {'Content-type':'text/html'})
+          res.end("No such file"); 
+      } else {
+          res.setHeader('Content-disposition', 'attachment; filename='+filename);
+          res.end(content);
+      }
+  });
+
+});
+
 module.exports = router;
