@@ -44,7 +44,6 @@ router.post("/", (req, res) => {
         files = files.filter(e=>!folders.includes(e));
         files = folders.concat(files);
         if(files) {
-          console.log(files)
             const curtime = new Date();
             files.forEach(file => {
                 const ext = file.name.split('.').pop();
@@ -125,9 +124,9 @@ router.post("/", (req, res) => {
                       </a>
                     `;
                   htmltext += `
-                      <a href="javascript:void(0)" 
-                      title="OCR ${(imageTypes.indexOf(ext) === -1)?`(not available for non-photo files)`:``}" 
-                      class="ocr-btn ${(imageTypes.indexOf(ext) === -1)?`disabled`:``}" 
+                      <a href="javascript:void(0)"
+                      title="OCR ${(imageTypes.indexOf(ext) === -1)?`(not available for non-photo files)`:``}"
+                      class="ocr-btn ${(imageTypes.indexOf(ext) === -1)?`disabled`:``}"
                       ${(imageTypes.indexOf(ext) !== -1)?`data-toggle="modal" data-target="#exampleModal"`:``}>
                             <i class="fas fa-camera"></i>
                       </a>`;
