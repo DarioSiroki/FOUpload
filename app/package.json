@@ -19,6 +19,7 @@
     "js-sha512": "^0.8.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
+    "node-tesseract-ocr": "^0.1.0",
     "nodemon": "^1.18.11",
     "sequelize": "^5.7.6"
   }

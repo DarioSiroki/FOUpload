@@ -5,6 +5,9 @@ const fileUpload = require('express-fileupload');
 const fs = require("fs");
 const path = require("path");
 
+const STORAGE_PATH = path.join(__dirname, "..", "storage");
+
+// express-fileupload middleware
 router.use(fileUpload());
 
 const verifySession = (req, res, next) => {
@@ -20,7 +23,7 @@ router.put("/", verifySession, (req, res) => {
     if(req.files) {
       const file = req.files.file;
       // Create upload path string
-      const uploadPath = path.join(__dirname, "..", "storage", String(req.userData.id));
+      const uploadPath = path.join(STORAGE_PATH, String(req.userData.id));
       // Create folders recursively if path doesn't exist
       fs.access(uploadPath, e => {
         if(e) fs.mkdirSync(uploadPath, { recursive: true });
@@ -34,7 +37,7 @@ router.put("/", verifySession, (req, res) => {
     } else {
       if(req.body.folder){
         // Create folders recursively if path doesn't exist
-        const folderPath = path.join(__dirname, "..", "storage", String(req.userData.id), req.body.folder);
+        const folderPath = path.join(STORAGE_PATH, String(req.userData.id), req.body.folder);
         fs.access(folderPath, e => {
           if(e) fs.mkdirSync(folderPath, { recursive: true });
         });
@@ -48,6 +51,18 @@ router.put("/", verifySession, (req, res) => {
   }
 });
 
-
+router.delete("/", verifySession, (req, res) => {
+  if(req.isValidSession){
+    if(req.body.path){
+      const deletePath = path.join(STORAGE_PATH, String(req.userData.id), req.body.path);
+      fs.unlink(deletePath);
+      res.send("Deleted successfully");
+    } else {
+      res.status(403).send("Invalid request");
+    }
+  } else {
+    res.status(403).send("Authentication error");
+  }
+});
 
 module.exports = router;
