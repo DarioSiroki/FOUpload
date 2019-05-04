@@ -21,7 +21,7 @@ router.post("/login", (req, res) => {
       } else if(sha512(password)!==data[0].password) {
         res.status(403).json({msg: "Invalid password"})
       } else {
-        jwt.sign({ "username": data[0].username }, process.env.SECRET, (err, token) => {
+        jwt.sign({ "username": data[0].username, "id": data[0].id }, process.env.SECRET, (err, token) => {
           res.cookie("session", token);
           res.json({msg: "Successfully logged in"});
         });
@@ -52,11 +52,15 @@ router.post("/register", (req, res) => {
             }
         })
         .then(data=>{
-            jwt.sign({ "username": username }, process.env.SECRET, (err, token) => {
-              res.cookie("session", token);
-              res.json({msg: "Successfully logged in"});
+          sequelize.query("SELECT LAST_INSERT_ID()", {type: sequelize.QueryTypes.SELECT})
+            .then(id => {
+              id = id[0]["LAST_INSERT_ID()"];
+              jwt.sign({ "username": username, "id": id }, process.env.SECRET, (err, token) => {
+                res.cookie("session", token);
+                res.json({msg: "Successfully logged in"});
+              });
             });
-          });
+        });
       }
     });
 
