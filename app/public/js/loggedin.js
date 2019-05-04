@@ -1,8 +1,7 @@
-$("#uploadform").dropzone({ 
+$("#uploadform").dropzone({
     dictDefaultMessage: "Drag anywhere to upload",
     url: "/api/files/",
     method:"PUT"
-
 });
 
 loadAjaxSearch($(".searchform").serialize());
@@ -52,6 +51,7 @@ $(".checkbox").click(function() {
         $(this).addClass("selected");
         $("input[name='"+$inputname+"'][value='"+$inputvalue+"']").prop("checked",true);
     }
+<<<<<<< HEAD
     $(".searchform").change();
     
 });
@@ -86,3 +86,11 @@ function loadAjaxSearch(datax) {
         }
     });
 }
+=======
+});
+
+$(document).on("click", ".image-modal", function() {
+  let imgPath = $(this).html();
+  $(".modal-body").html(imgPath);
+});
+>>>>>>> d8091196d38b12596d9ce5484665fc6c23791d49
