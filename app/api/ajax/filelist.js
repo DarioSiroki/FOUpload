@@ -32,8 +32,8 @@ router.post("/", (req, res) => {
                 const ext = file.split('.').pop();
                 var stats = fs.statSync(path.join(pathx,file));
                 var mtime = new Date(stats.mtime);
-                mtime = `${mtime.getDate()} ${months[mtime.getMonth()]} ${mtime.getFullYear()}`;
                 const dateDif = (curtime.getTime() - mtime.getTime()) / (1000 * 60 * 60 * 24);
+                mtime = `${mtime.getDate()} ${months[mtime.getMonth()]} ${mtime.getFullYear()}`;
                 const size = humanReadableSize(stats.size);
 
                 var pass = true;
