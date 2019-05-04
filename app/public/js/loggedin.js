@@ -1,8 +1,7 @@
-$("#uploadform").dropzone({ 
+$("#uploadform").dropzone({
     dictDefaultMessage: "Drag anywhere to upload",
     url: "/api/files/",
     method:"PUT"
-
 });
 
 $.ajax({
@@ -17,4 +16,9 @@ $.ajax({
     error:function(o) {
         $("#out").html(o);
     }
+});
+
+$(document).on("click", ".image-modal", function() {
+  let imgPath = $(this).html();
+  $(".modal-body").html(imgPath);
 });
