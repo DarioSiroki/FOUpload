@@ -13,6 +13,7 @@ const verifySession = (req, res, next) => {
 
 router.put("/", (req, res) => {
   res.send("nice");
+  console.log(req.files);
 })
 
 module.exports = router;
