@@ -27,24 +27,3 @@
   width:350px;
 
 }
-
-
-
-.navbar a {
-  color:#FFF!Important;
-}
-
-.navbar .cust-dropdown-menu a {
-  color:#333!important;
-}
-
-.navbar {
-  position:fixed;
-  left:0;
-  right:0;
-  z-index:101;
-}
-
-.content {
-  padding-top:80px;
-}

@@ -1,27 +1,25 @@
-{{>sidebar}}
-<div class="content maxheight">
-    <div class="maxheight">
-        <div class="col-8 offset-2 maxheight">
-            <h1 class="text-center">My files</h1>
-            <form id="uploadform" class="maxheight">
+<div class="row maxheight">
+    <div class="col-8 offset-2 maxheight">
+        <h1 class="text-center">My files</h1>
+        <form id="uploadform" class="maxheight">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search files..." aria-label="Search" name="query">
+            <table class="table">
                 
-                <table class="table">
-                    <thead>
-                        <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Filename</th>
-                        <th scope="col">Uploaded on</th>
-                        <th scope="col" class="text-center">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody id="filelist">
-                    </tbody>
-                </table>
-                
-                <p id="out" class="text-center"></p>
-                <input type="hidden" accept="image/*">
-            </form>
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Filename</th>
+                    <th scope="col">Uploaded on</th>
+                    <th scope="col" class="text-center">Options</th>
+                    </tr>
+                </thead>
+                <tbody id="filelist">
+                </tbody>
+            </table>
+            
+            <p id="out" class="text-center"></p>
+            <input type="hidden" accept="image/*">
+        </form>
 
-        </div>
     </div>
 </div>
