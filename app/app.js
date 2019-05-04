@@ -34,7 +34,6 @@ const verifySession = (req, res, next) => {
 const external = [
   "/api/users", 
   "/api/files", 
-  "/api/ocr",
   "/api/ajax/filelist"
 ];
 
