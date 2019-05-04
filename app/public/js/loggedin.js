@@ -151,5 +151,48 @@ $(document).on("click", "a.file-name", function(){
 })
 
 $(document).on("click", ".stop-playback", function(){
-  document.querySelector("video, audio").pause()
+  let target = $("div.modal-body");
+  target.html("");
+  try{
+    document.querySelector("video, audio").pause();
+  } catch {}
+});
+
+$(document).on("click", ".delete-btn", function(){
+  let path = $(this).parents("tr").find("td:nth-child(1) a").html()
+  $.ajax({
+    url: "/api/files",
+    data: {
+      path: `${path}`
+    },
+    type: "DELETE",
+    success: data => {
+      $(this).parents("tr").remove();
+    }
+  });
+});
+
+$(document).on("click", ".ocr-btn", function(){
+  let target = $("div.modal-body");
+  let path = $(this).parents("tr").find("td:nth-child(1) a").html()
+  let loader = `
+  <div class="spinner-border text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>`;
+  target.html(loader);
+  $.ajax({
+    url: "/api/ocr",
+    data: {
+      path: `${path}`
+    },
+    type: "POST",
+    success: data => {
+      target.html(`<pre style="
+      white-space: pre-wrap;
+      font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+      background-color: #eff0f1;
+      padding: 25px;
+      ">${data}</pre>`);
+    }
+  })
 });

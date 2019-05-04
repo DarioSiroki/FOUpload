@@ -11,13 +11,6 @@ const STORAGE_PATH = path.join(__dirname, "..", "storage");
 // express-fileupload middleware
 router.use(fileUpload());
 
-const detectText = async(imgPath) => {
-  const client = new vision.ImageAnnotatorClient();
-  const [result] = await client.textDetection(imgPath);
-  const detections = result.textAnnotations;
-  return detections[0].description
-}
-
 router.put("/", (req, res) => {
   if(req.isValidSession) {
     if(req.files) {
@@ -32,16 +25,7 @@ router.put("/", (req, res) => {
       const filePath = path.join(uploadPath, file.name);
       file.mv(filePath, e => {
         if(e) res.status(500).send("Server error");
-        else {
-          res.send("File uploaded");
-          // Create text file of image
-          if(req.body.ocr) {
-            const text = detectText(uploadPath);
-            fs.writeFileSync(filePath + ".txt", text, (e) => {
-              if(e) console.log(e);
-            })
-          }
-        };
+        else res.send("File uploaded");          
       });
     } else {
       if(req.body.folder){
@@ -64,7 +48,7 @@ router.delete("/", (req, res) => {
   if(req.isValidSession){
     if(req.body.path){
       const deletePath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
-      fs.unlink(deletePath);
+      fs.unlinkSync(deletePath);
       res.send("Deleted successfully");
     } else {
       res.status(403).send("Invalid request");
