@@ -102,6 +102,7 @@ $(document).on("click", "a.file-name", function(){
   let extension = filename.split('.').pop().toLowerCase();
   let imgs = ["png", "jpg", "jpeg", "tiff"];
   let audio = ["mp3", "wav", "ogg"];
+  let video = ["mp4", "webm"];
   if(imgs.includes(extension)) {
     $.ajax({
       url: `/storage/${filename}`,
@@ -110,10 +111,40 @@ $(document).on("click", "a.file-name", function(){
         target.html(html);
       }
     })
-  } else if(imgs.includes(extension)){
-    console.log("hi");
+  } else if(audio.includes(extension)){
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+        target.html(`
+          <audio controls>
+            <source src="${data}" type="audio/${extension}">
+          </audio>
+          `)
+      }
+    })
   } else if(extension==="txt"){
-    console.log("hi");
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+        $.ajax({
+          url: data,
+          success: data => {
+            target.html(`<pre style="white-space: pre-wrap;">${data}</pre>`);
+          }
+        })
+      }
+    })
+  } else if(video.includes(extension)) {
+    $.ajax({
+      url: `/storage/${filename}`,
+      success: data => {
+            target.html(`
+              <video controls>
+                <source src="${data}" type="video/${extension}">
+              </video>
+              `);
+      }
+    })
   } else {
     target.html("Sorry but we don't support this type of file yet.")
   }
