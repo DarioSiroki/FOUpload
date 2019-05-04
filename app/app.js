@@ -28,16 +28,7 @@ const verifySession = (req, res, next) => {
     req.user = e ? "" : data;
     req.isValidSession = e ? false : true;
   });
-  if(req.originalUrl.indexOf("/download")>-1 || req.originalUrl.indexOf("/storage")>-1){
-    if(!req.isValidSession) {
-      res.status(403).send("Authentication error");
-    } else if(req.originalUrl.indexOf("/storage")>-1){
-      const reqId = req.originalUrl.split("/")[2]
-      if(parseInt(reqId)===parseInt(req.user.id)) next();
-    }
-  } else {
-    next();
-  }
+  next();
 };
 server.use(verifySession);
 
@@ -51,8 +42,7 @@ const external = [
 external.map(el => {
   server.use(el, require('.'+el));
 });
-console.log(__dirname + "/api/ajax/exposeStorage");
-server.use("/storage", require(__dirname + "/api/ajax/exposeStorage"));
+
 
 // Public files route
 server.use(express.static("public"));
