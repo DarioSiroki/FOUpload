@@ -33,24 +33,14 @@ const verifySession = (req, res, next) => {
 
 // API routes
 const external = [
-<<<<<<< HEAD
   "/api/users",
   "/api/files",
-  "/api/ajax/filelist",
-=======
-  "/api/users", 
-  "/api/files", 
   "/api/ajax/filelist"
->>>>>>> a3d765a0d8d743cbfa50e70dc54f70c6391b1c4b
 ];
 
 external.map(el => {
   server.use(el, require('.'+el));
 });
-<<<<<<< HEAD
-=======
-
->>>>>>> a3d765a0d8d743cbfa50e70dc54f70c6391b1c4b
 
 // Public files route
 server.use(express.static("public"));
