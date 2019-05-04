@@ -87,7 +87,7 @@ router.get("/download", verifySession, (req, res) => {
   fs.readFile(pathx, function (err, content) {
       if (err) {
           res.writeHead(400, {'Content-type':'text/html'})
-          res.end("No such file"); 
+          res.end("No such file");
       } else {
           res.setHeader('Content-disposition', 'attachment; filename='+filename);
           res.end(content);
