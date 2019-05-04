@@ -1,0 +1,102 @@
+{{>sidebar}}
+<div class="content maxheight">
+    <div class="maxheight">
+        <div class="col-sm-8 offset-sm-2 maxheight">
+            <div class="usage">
+                <div class="row">
+                    <div class="col-4 text-left">
+                        <svg class="percentagegraph" viewBox="0 0 36 36">
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#ccc";
+                                stroke-width="2";
+                                stroke-dasharray="100, 100"
+                            />
+                            <text x="50%" y="46%" fill="#007bff" dominant-baseline="middle" style="font-size:5px" text-anchor="middle">{{usage}} MB</text>
+                            <text x="50%" y="58%" fill="#007bff" dominant-baseline="middle" style="font-size:4px" text-anchor="middle">Disk usage</text>
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#007bff";
+                                stroke-width="2";
+                                stroke-dasharray="{{usagepercent}}, 100"
+                            />
+                        </svg>
+                    </div>
+                    <div class="col-4 text-center">
+                        <svg class="percentagegraph" viewBox="0 0 36 36">
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#ccc";
+                                stroke-width="2";
+                                stroke-dasharray="100, 100"
+                            />
+                            <text x="50%" y="46%" fill="#007bff" dominant-baseline="middle" style="font-size:5px" text-anchor="middle">{{filesfolders}}</text>
+                            <text x="50%" y="58%" fill="#007bff" dominant-baseline="middle" style="font-size:4px" text-anchor="middle">Files/folders</text>
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#007bff";
+                                stroke-width="2";
+                                stroke-dasharray="{{filesfolderspercent}}, 100"
+                            />
+                        </svg>
+                    </div>
+                    <div class="col-4 text-right">
+                        <svg class="percentagegraph" viewBox="0 0 36 36">
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#ccc";
+                                stroke-width="2";
+                                stroke-dasharray="100, 100"
+                            />
+                            <text x="50%" y="46%" fill="#007bff" dominant-baseline="middle" style="font-size:5px" text-anchor="middle">{{freespace}}</text>
+                            <text x="50%" y="58%" fill="#007bff" dominant-baseline="middle" style="font-size:4px" text-anchor="middle">Free space</text>
+                            <path
+                                d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#007bff";
+                                stroke-width="2";
+                                stroke-dasharray="{{freespacepercent}}, 100"
+                            />
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+            <form id="usersettings_form">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control disabled" name="settings_email" placeholder="Your email" value="{{email}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Current password</label>
+                    <input type="password" class="form-control" name="settings_currentpw" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">New password</label>
+                    <input type="password" class="form-control" name="settings_newpw" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <p id="msg">&nbsp;</p>
+
+            </form>
+
+        </div>
+    </div>
+</div>

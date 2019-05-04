@@ -1,14 +1,10 @@
-html,body {
-    height:100%;
-}
+
 
 body {
     background:#efefef;
 }
 
-.maxheight {
-    height:100%;
-}
+
 
 .sidebar {
     background:#333;
@@ -92,15 +88,43 @@ table a {
     background:#FFF;
     padding:15px;
 }
-.fa-trash {
+.delete-btn .fa-trash {
   color: red;
+}
+
+.ocr-btn.disabled .fas {
+    color: #aaa;
 }
 
 .responsive-heading {
     display:none;
 }
 
-@media screen and (max-width:768px) {
+#navbarDropdown a{
+    color:#000!important;
+
+}
+
+.usage {
+    padding:15px;
+    border-radius:5px;
+    background:#f5f5f5;
+    border:1px solid #eee;
+    width:100%;
+    max-width:700px;
+    margin:15px auto;
+    text-align:center;
+}
+
+.percentagegraph {
+    display:inline-block;
+    width:100px;
+    height:100px;
+}
+
+
+
+@media screen and (max-width:1024px) {
     .maxheight {
         height:auto;
     }
@@ -109,9 +133,23 @@ table a {
         padding:0;
         margin:0;
         width:auto;
+        padding:5px;
+        text-align:center
+    }
+    #uploadform table td:not(:nth-child(1)) {
+        width:50%;
+        float:left;
+    }
+    #uploadform table td:nth-child(1) {
+        font-size:16px;
+    } 
+    #uploadform table th,#uploadform table thead {
+        display:none;
     }
     .responsive-heading {
         display:block;
+        font-weight:700;
+        background:rgba(0,0,0,.05);
     }
 
 }

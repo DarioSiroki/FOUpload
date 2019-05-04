@@ -63,6 +63,35 @@ router.post("/register", (req, res) => {
         });
       }
     });
+});
+
+router.post("/changepassword", (req, res) => {
+  if(req.user) {
+    const currentpw = sha512(req.body.settings_currentpw);
+    const newpw     = sha512(req.body.settings_newpw);
+    sequelize.query(`SELECT id from users where id=:id and password=:password LIMIT 1`, { 
+      replacements: {
+          id: req.user.id,
+          password: currentpw
+      },
+      type: sequelize.QueryTypes.SELECT
+    })
+    .then(data=>{
+      if(data[0]) {
+        sequelize.query(`UPDATE users SET password=:password WHERE id=:id`, {
+          replacements: {
+              id: req.user.id,
+              password: newpw
+          }
+        }).then(()=>{
+          res.send("Successfully changed your password. ");
+        });
+      }
+      else {
+        res.status(403).json({msg: "Current password incorrect."});
+      }
+    });
+  }
 
 });
 

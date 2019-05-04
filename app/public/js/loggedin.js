@@ -203,3 +203,18 @@ $(document).on("click", ".ocr-btn", function(){
 });
 
 
+$("#usersettings_form").submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url:"/api/users/changepassword",
+        method:"POST",
+        data: $("#usersettings_form").serialize(),
+        success:function(o) {
+            $("#msg").html(o);
+        },
+        error:function(o) {
+            $("#msg").html("<span style='color:#f00'>"+o.responseJSON.msg+"</span>");
+        }
+    });
+    return false;
+});
