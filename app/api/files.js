@@ -4,11 +4,19 @@ const jwt = require("jsonwebtoken")
 const fileUpload = require('express-fileupload');
 const fs = require("fs");
 const path = require("path");
+const vision = require('@google-cloud/vision');
 
 const STORAGE_PATH = path.join(__dirname, "..", "storage");
 
 // express-fileupload middleware
 router.use(fileUpload());
+
+const detectText = async(imgPath) => {
+  const client = new vision.ImageAnnotatorClient();
+  const [result] = await client.textDetection(imgPath);
+  const detections = result.textAnnotations;
+  return detections[0].description
+}
 
 const verifySession = (req, res, next) => {
   jwt.verify(req.cookies.session, process.env.SECRET, (e, data) => {
@@ -32,7 +40,16 @@ router.put("/", verifySession, (req, res) => {
       const filePath = path.join(uploadPath, file.name);
       file.mv(filePath, e => {
         if(e) res.status(500).send("Server error");
-        else res.send("File uploaded");
+        else {
+          res.send("File uploaded");
+          // Create text file of image
+          if(req.body.ocr) {
+            const text = detectText(uploadPath);
+            fs.writeFileSync(filePath + ".txt", text, (e) => {
+              if(e) console.log(e);
+            })
+          }
+        };
       });
     } else {
       if(req.body.folder){
@@ -72,7 +89,7 @@ router.get("/download", verifySession, (req, res) => {
   fs.readFile(pathx, function (err, content) {
       if (err) {
           res.writeHead(400, {'Content-type':'text/html'})
-          res.end("No such file"); 
+          res.end("No such file");
       } else {
           res.setHeader('Content-disposition', 'attachment; filename='+filename);
           res.end(content);
