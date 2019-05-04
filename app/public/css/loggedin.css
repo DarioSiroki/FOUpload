@@ -2,6 +2,10 @@ html,body {
     height:100%;
 }
 
+body {
+    background:#efefef;
+}
+
 .maxheight {
     height:100%;
 }
@@ -82,4 +86,9 @@ table a {
 .modal-body {
   margin: 0 auto;
   display: block;
+}
+
+.content .col-8 {
+    background:#FFF;
+    padding:15px;
 }

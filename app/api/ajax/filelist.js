@@ -66,8 +66,21 @@ router.post("/", (req, res) => {
                         pass = false;
                 }
 
-                if(dateDif > req.body.dateuploaded) {
+                if(!(isNaN(parseInt(req.body.dateuploaded, 10))) && (dateDif > parseInt(req.body.dateuploaded, 10))) {
                     pass = false;
+                }
+
+                if(!isNaN(parseFloat(req.body.size))) {
+                    if(req.body.sizetype == ">") {
+                        if(stats.size / Math.pow(1024, 2) < parseFloat(req.body.size)) {
+                            pass = false;
+                        }
+                    }
+                    else {
+                        if(stats.size / Math.pow(1024, 2) > parseFloat(req.body.size)) {
+                            pass = false;
+                        }
+                    }
                 }
 
 

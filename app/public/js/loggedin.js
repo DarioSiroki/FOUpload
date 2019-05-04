@@ -67,7 +67,7 @@ $(".searchform").change(function() {
     loadAjaxSearch($(".searchform").serialize());
 });
 
-$("#search").keydown(function() {
+$("#search,#mbsize").keydown(function() {
     clearTimeout(cooldown);
     cooldown = setTimeout(function() {
         loadAjaxSearch($(".searchform").serialize());
