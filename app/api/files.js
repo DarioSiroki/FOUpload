@@ -13,6 +13,24 @@ const STORAGE_PATH = path.join(__dirname, "..", "storage");
 // express-fileupload middleware
 router.use(fileUpload());
 
+router.get("/", (req, res) => {
+  if(req.isValidSession){
+    if(req.body.path){
+      const folderPath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
+      try {
+      const files = fs.readdirSync(folderPath);
+    } catch {
+      res.status(403).send("No such file or directory");
+    }
+      res.json(files);
+    } else {
+      res.status(403).send("Invalid request, no path parameter");
+    }
+  } else {
+    res.status(403).send("Authentication error");
+  }
+});
+
 router.put("/", (req, res) => {
   if(req.isValidSession) {
     if(req.body.createFolder) {
