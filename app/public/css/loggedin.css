@@ -8,12 +8,16 @@ body {
 
 .sidebar {
     background:#333;
+    background-image:url(/img/sidebarbg.jpg);
+    background-size:cover;
+    background-position:center;
     width:250px;
     height:100%;
     position:fixed;
     z-index:100;
     padding:1px;
-    padding-top:60px;
+    padding-top:57px;
+    overflow-y:auto;
 }
 
 #search {
