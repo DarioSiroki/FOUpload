@@ -146,7 +146,7 @@ table a {
     }
     #uploadform table td:nth-child(1) {
         font-size:16px;
-    } 
+    }
     #uploadform table th,#uploadform table thead {
         display:none;
     }
