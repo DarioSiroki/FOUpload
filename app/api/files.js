@@ -56,6 +56,8 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
+  console.log(req.isValidSession)
+  console.log(req.body.path)
   if(req.isValidSession){
     if(req.body.path){
       const deletePath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
@@ -89,7 +91,7 @@ router.post("/compare", (req, res) => {
   if(req.user) {
     const file1 = req.body.file1;
     const file2 = req.body.file2;
-    
+
     try {
      var content1 = fs.readFileSync(path.join(STORAGE_PATH,String(req.user.id), String(file1)), "utf8");
      var content2 = fs.readFileSync(path.join(STORAGE_PATH,String(req.user.id), String(file2)), "utf8");

@@ -223,7 +223,8 @@ $(document).on("click", ".stop-playback", function(){
 
 $(document).on("click", ".delete-btn", function(){
   path = $("input#path").val();
-  path += $(this).parents("tr").find("td:nth-child(3) a").html();
+  path += $(this).parents("tr").find("td:nth-child(2) a").html();
+  console.log(path)
   $.ajax({
     url: "/api/files",
     data: {
@@ -239,7 +240,7 @@ $(document).on("click", ".delete-btn", function(){
 $(document).on("click", ".ocr-btn", function(){
   let target = $("div.modal-body");
   path = $("input#path").val();
-  path = path + $(this).parents("tr").find("td:nth-child(3) a").html();
+  path = path + $(this).parents("tr").find("td:nth-child(2) a").html();
   let loader = `
   <div class="spinner-border text-info" role="status">
     <span class="sr-only">Loading...</span>
