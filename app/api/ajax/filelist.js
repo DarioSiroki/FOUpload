@@ -11,6 +11,8 @@ const STORAGE_PATH = path.join(__dirname, "..", "..", "storage");
 
 const imageTypes = ["png","jpg","jpeg","gif","tiff","bmp","webm"];
 const audioTypes = ["3gp","aa","aac" ,"aax" ,"act" ,"aiff" ,"amr" ,"ape" ,"au","awb","dct" ,"dss" ,"dvf" ,"flac" ,"gsm" ,"iklax" ,"ivs" ,"m4a" ,"m4b" ,"m4p" ,"mmf" ,"mp3" ,"mpc" ,"msv" ,"nmf" ,"nsf" ,"ogg"   ,"opus" ,"ra"    ,"raw" ,"sln" ,"tta" ,"voc" ,"vox" ,"wav" ,"wma" ,"wv","webm" ,"8svx"];
+const videoTypes = ["mp4", "webm", "ogg"];
+const docTypes = ["pdf", "docx", "txt"];
 const humanReadableSize = (size) => {
   const i = Math.floor( Math.log(size) / Math.log(1024) );
   return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
@@ -85,6 +87,16 @@ router.post("/", (req, res) => {
 
                 if(!req.body.ftype_audio) {
                     if(audioTypes.indexOf(ext) !== -1)
+                        pass = false;
+                }
+
+                if(!req.body.ftype_video) {
+                    if(videoTypes.indexOf(ext) !== -1)
+                        pass = false;
+                }
+
+                if(!req.body.ftype_doc) {
+                    if(docTypes.indexOf(ext) !== -1)
                         pass = false;
                 }
 
