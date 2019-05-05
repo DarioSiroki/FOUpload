@@ -135,7 +135,7 @@ router.post("/", (req, res) => {
                       <a href="javascript:void(0)" title="Delete" class="delete-btn"><i class="fas fa-trash"></i></a>
                       <input type='checkbox' style='display:none' class='comparebox' ${(ext != "txt")?"disabled":""}>
                       </td>
-                      
+
                   </tr>
                   `;
                 }

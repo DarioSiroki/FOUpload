@@ -55,21 +55,28 @@ server.use(express.static("public"));
 server.use("/storage", verifyStorageAccess, express.static("storage"));
 
 // Handlebars routes
-server.get("/", verifySession, (req, res) => {
+server.get("/", (req, res) => {
     res.render((req.user)?"loggedin":"home", {
       title: "FOUpload",
       always: req.user,
     });
 });
 
-server.get("/settings", verifySession, (req, res) => {
+server.get("/api/docs", (req, res) => {
+  res.render("apiDocs", {
+    title: "API docs",
+    always: req.user
+  });
+})
+
+server.get("/settings", (req, res) => {
   if(req.user) {
     sequelize.query("SELECT email from users where id=:id LIMIT 1", {
       replacements: {id: req.user.id},
       type: sequelize.QueryTypes.SELECT
     })
     .then(dbdata=>{
-      getSize(path.join(STORAGE_PATH, String(req.user.id)), (err, size) => {     
+      getSize(path.join(STORAGE_PATH, String(req.user.id)), (err, size) => {
         fs.readdir(path.join(STORAGE_PATH, String(req.user.id)), (err, files) => {
           const mbsize = (size / 1024 / 1024).toFixed(0);
           const filesfolders = (files)?files.length:0;
@@ -84,15 +91,15 @@ server.get("/settings", verifySession, (req, res) => {
             freespacepercent: (MAX_DISK_USAGE - mbsize)/MAX_DISK_USAGE*100,
             email: dbdata[0].email
           });
-  
+
         });
-       
-        
+
+
       });
 
     });
-    
-    
+
+
   }
 });
 
