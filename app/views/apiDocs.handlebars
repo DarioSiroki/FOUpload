@@ -1,38 +1,71 @@
-{{>sidebar}}
+<style>
+   pre {
+   white-space: pre-wrap;
+   font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+   background-color: #eff0f1;
+   padding: 25px;
+   }
+   span {
+   color: red;
+   }
+</style>
 <div class="content maxheight">
-    <div class="maxheight">
-      <div class="col-lg-8 offset-lg-2 maxheight">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
-        </table>
-        <h2>Getting started</h2>
+   <div class="col-lg-8 offset-lg-2">
+      <div style="display: inline-block;">
+         <h2>Getting started</h2>
+         <p>First step is sending your login credentials to the login route:</p>
+         <pre><span>POST</span> /api/users/login</pre>
+         <p>Don't forget to pass in your login credentials into body:</p>
+         <pre>
+{
+  <span>email</span>: "your username or email",
+  <span>password</span>: "password"
+}          </pre>
+         <p>Set-cookie header will set a session token for you and you should get a <span>200</span> status code.</p>
+         <!-- List -->
+         <h2>List directory</h2>
+         <p>Create a <span>GET</span> request towards the api:</p>
+         <pre><span>GET</span> /api/files</pre>
+         <p>Your payload should look like this:</p>
+         <pre>
+{
+  <span>path</span>: "/list/my/folder/plx"
+} </pre>
+         <p>Don't forget to include a "session" cookie!</p>
+         <p>You should get a JSON response listing everything from your root folder.</p>
+         <!-- Download -->
+         <h2>Download file</h2>
+         <p>Create a <span>GET</span> request towards the api:</p>
+         <pre><span>GET</span> /download?filename=<i>/path/to/file</i> </pre>
+         <p>Don't forget to include a "session" cookie!</p>
+         <p>You should get a binary response of your file with <span>200</span> status code.</p>
+         <!-- Upload -->
+         <h2>Upload file</h2>
+         <p>Create a <span>PUT</span> request towards the api:</p>
+         <pre><span>PUT</span> /api/files</pre>
+         <p>Your payload should look like this:</p>
+<pre>
+{
+  <span>path</span>: "/dinamo/drle.jpg"
+} </pre>
+         <p>You should get a <span style="color: green;">200</span> code saying your upload was a success. </p>
+         <p>If you want to create a folder pass a payload like this, but be aware that if you want to <span>PUT</span> a file into non-existing folder, it will be created recursively.</p>
+         <pre>
+{
+ <span>path</span>: "/meter/griffin.jpg",
+ <span>createFolder</span>: true
+} </pre>
+      <p>And pass the credentials of course...</p>
+      <!-- Delete -->
+      <h2>Delete file</h2>
+      <p>Create a <span>DELETE</span> request towards the api:</p>
+      <pre><span>DELETE</span> /api/files</pre>
+      <p>Your payload should look like this:</p>
+<pre>
+{
+<span>path</span>: "/foo/bar.ogg"
+} </pre>
+      <p>You should get a <span style="color: green;">200</span> code with success message.</p>
       </div>
-    </div>
+   </div>
 </div>
