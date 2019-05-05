@@ -8,11 +8,18 @@ $("#uploadform").dropzone({
     sending: function(file, xhr, formData) {
       path = $("input#path").val();
       formData.append('path', path);
+      $("#upload-name").html(file.upload.filename);
+      $("#upload-name").show();
+      $("div.progress").show();
     },
     uploadprogress: function(file, progress, bytesSent) {
-      console.log(progress);
+      progress = Math.round(progress, 2) + "%";
+      $("div.progress-bar").html(progress);
+      $("div.progress-bar").css("width", progress);
     },
     success: function() {
+      $("div.progress").hide();
+      $("#upload-name").hide();
       loadAjaxSearch("path=" + $("input#path").val());
     }
 });
