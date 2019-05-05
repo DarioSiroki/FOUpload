@@ -7,7 +7,18 @@
     <link rel="stylesheet" type="text/css" href="/css/master.css">
     {{#if always.username}}
     <link rel="stylesheet" type="text/css" href="/css/loggedin.css">
+    {{else}}
+    <style>
+      .navbar.navbar-expand.navbar-dark.bg-primary {
+          border-bottom: 1px solid rgba(255,255,255,0.2);
+          background-color: rgba(0,0,0,.4)!important;
+          -webkit-box-shadow: 0px 5px 5px -1px rgba(255,255,255,0.43);
+          -moz-box-shadow: 0px 5px 5px -1px rgba(255,255,255,0.43);
+          box-shadow: 0px 5px 5px -1px rgba(255,255,255,0.07)
+      }
+    </style>
     {{/if}}
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +28,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         {{#if always.username}}
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item mobileshow">
             <a href="javascript:void(0)" class="opensidebar nav-link"><i class="fas fa-search"></i></a>
 
           </li>

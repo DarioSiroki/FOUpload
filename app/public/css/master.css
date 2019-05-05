@@ -60,6 +60,7 @@ html,body {
   background-size:cover;
   background-position:center;
   height:100%;
+  position: relative;
 }
 
 .banner h1, .banner p {
@@ -68,12 +69,32 @@ html,body {
   text-align:center;
 }
 
+
+
 .banner h1 {
   font-size:85px;
 }
 
 .banner p {
   font-size:50px;
+}
+
+@keyframes jump {
+  0% {bottom:15px}
+  50% {bottom:6px}
+  100% {bottom:15px}
+}
+
+#godown {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:10px;
+  text-align:center;
+  color:#FFF;
+  color:rgba(255,255,255,.6);
+  font-size:60px;
+  animation: jump 1.5s ease-in infinite;
 }
 
 .vert-center-outer {

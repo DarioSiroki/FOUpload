@@ -1,7 +1,7 @@
 {{>sidebar}}
 <div class="content maxheight">
     <div class="maxheight">
-        <div class="col-lg-8 offset-lg-2 maxheight">
+        <div class="col-12 maxheight">
             <input type="hidden" id="path" value="/">
             <form id="add-folder-form" class="form-inline">
               <div class="form-group mb-2">
@@ -15,7 +15,14 @@
 
             <form id="uploadform">
               <input type="hidden" accept="image/*">
-            
+              <div class="vert-center-outer">
+                <div class="vert-center-inner text-center">
+                  <p>Drag and drop files here to upload</p>
+                </div>
+              </div>
+              <div id="uploadform_border"></div>
+            </form>   
+            <div id="uploadformcss">
             
                 <table class="table table-striped">
                     <thead>
@@ -74,8 +81,8 @@
                 </div>
 
                 <p id="out" class="text-center"></p>
-             </form>   
-            
+             
+            </div>
 
         </div>
     </div>

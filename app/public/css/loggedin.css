@@ -12,7 +12,6 @@ body {
     height:100%;
     position:fixed;
     z-index:100;
-    display:none;
     padding:1px;
     padding-top:60px;
 }
@@ -20,6 +19,10 @@ body {
 #search {
     border-radius:0;
 
+}
+
+.mobileshow {
+    display:none;
 }
 
 .sidebar label {
@@ -84,10 +87,13 @@ table a {
   display: block;
 }
 
-.content .col-lg-8 {
+.content .col-12 {
     background:#FFF;
     padding:15px;
+    padding-left:260px;
 }
+
+
 .delete-btn .fa-trash {
   color: red;
 }
@@ -139,12 +145,29 @@ table a {
     margin-right:10px;
 }
 
+#uploadform {
+    position:fixed;
+    top:55px;bottom:0;left:0;right:0;
+    background:#FFF;
+    z-index:100;
+    display:none;
+}
+
+#uploadform_border {
+    position:absolute;
+    top: 10%;
+    bottom:10%;
+    left:10%;
+    right:10%;
+    z-index:101;
+    border:5px dotted #aaa;
+}
 
 @media screen and (max-width:1024px) {
     .maxheight {
         height:auto;
     }
-    #uploadform table td {
+    #uploadformcss table td {
         display:block;
         padding:0;
         margin:0;
@@ -152,18 +175,18 @@ table a {
         padding:5px;
         text-align:center
     }
-    #uploadform table td,#uploadform table td {
+    #uploadformcss table td,#uploadform table td {
         width:50%;
         float:left;
     }
-    #uploadform table td:nth-child(1),#uploadform table td:nth-child(2) {
+    #uploadformcss table td:nth-child(1),#uploadformcss table td:nth-child(2) {
         float:none;
         width:auto;
     }
-    #uploadform table td:nth-child(1) {
+    #uploadformcss table td:nth-child(1) {
         font-size:32px;
     }
-    #uploadform table th,#uploadform table thead {
+    #uploadformcss table th,#uploadformcss table thead {
         display:none;
     }
     .responsive-heading {
@@ -174,5 +197,19 @@ table a {
     .fileoptions {
         font-size:24px;
     }
+    .mobileshow {
+        display:block;
+    }
+    .content .col-12 {
+        padding-left:10px;
+    }
+    .sidebar {
+        display:none;
+    }
+}
 
+@media screen and (min-width:1025px) {
+    .sidebar {
+        display:block!important;
+    }
 }
