@@ -56,8 +56,6 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  console.log(req.isValidSession)
-  console.log(req.body.path)
   if(req.isValidSession){
     if(req.body.path){
       const deletePath = path.join(STORAGE_PATH, String(req.user.id), req.body.path);
