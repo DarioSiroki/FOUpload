@@ -8,7 +8,7 @@ body {
 
 .sidebar {
     background:#333;
-    width:350px;
+    width:250px;
     height:100%;
     position:fixed;
     z-index:100;
@@ -105,6 +105,12 @@ table a {
 
 }
 
+.fileoptions input {
+    width:20px;
+    height:20px;
+    vertical-align:middle;
+}
+
 .usage {
     padding:15px;
     border-radius:5px;
@@ -128,6 +134,12 @@ table a {
 
 
 
+#add-folder-form {
+    float:left;
+    margin-right:10px;
+}
+
+
 @media screen and (max-width:1024px) {
     .maxheight {
         height:auto;
@@ -140,12 +152,16 @@ table a {
         padding:5px;
         text-align:center
     }
-    #uploadform table td:not(:nth-child(1)) {
+    #uploadform table td,#uploadform table td {
         width:50%;
         float:left;
     }
+    #uploadform table td:nth-child(1),#uploadform table td:nth-child(2) {
+        float:none;
+        width:auto;
+    }
     #uploadform table td:nth-child(1) {
-        font-size:16px;
+        font-size:32px;
     } 
     #uploadform table th,#uploadform table thead {
         display:none;
@@ -154,6 +170,9 @@ table a {
         display:block;
         font-weight:700;
         background:rgba(0,0,0,.05);
+    }
+    .fileoptions {
+        font-size:24px;
     }
 
 }

@@ -90,6 +90,7 @@ function loadAjaxSearch(datax) {
                 $("table td").each(function() {
                     var idx = $(this).parent().find("td:not(.responsive-heading)").index($(this));
                     var text = $(this).closest("table").find("tr th").eq(idx+1).html();
+                    if(text != "Filename")
                     $("<td class='responsive-heading'>"+text+"</td>").insertBefore($(this).next());
                 });
             }
@@ -103,6 +104,9 @@ function loadAjaxSearch(datax) {
         }
     });
 }
+
+
+
 
 $(document).on("click", "a.file-name", function(){
   let target = $("div.modal-body");
@@ -290,4 +294,43 @@ $(document).on("submit", "#add-folder-form", function(e){
     }
   })
   return false;
+});
+
+$(document).on("click","#compare",function() {
+  $(".comparebox").show();
+
+});
+
+$(document).on("change",".comparebox",function(e) {
+  if(this.checked) {
+    if($(".comparebox:checked").length >= 2) {
+      let file1 = $(".comparebox:checked").eq(0).parents("tr").find("td a.file-name").html();
+      let file2 = $(".comparebox:checked").eq(1).parents("tr").find("td a.file-name").html();
+      $("#exampleModal .modal-body").html("Comparing...");
+      $('#exampleModal').modal("show");
+      $(".comparebox").prop("checked",false);
+      $(".comparebox").hide();
+      $.ajax({
+        url: "/api/files/compare",
+        method:"POST",
+        data: {
+          file1: file1,
+          file2: file2
+        },
+        success: function(o) {
+          let htmltxt = "";
+          let json = JSON.parse(o);
+          json.forEach(function(el) {
+              if(el.added) {
+                htmltxt += "<pre style='background:rgba(0,255,0,.25);margin:0'>+"+el.value+"</pre>";
+              }
+              else if(el.removed) {
+                htmltxt += "<pre style='background:rgba(255,0,0,.25);margin:0'>-"+el.value+"</pre>";
+              }
+          });
+          $("#exampleModal .modal-body").html((htmltxt)?htmltxt:"Files are the same");
+        }
+      });
+    }
+  }
 });

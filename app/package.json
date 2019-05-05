@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/vision": "^0.25.0",
     "cookie-parser": "^1.4.4",
+    "diff": "^4.0.1",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.1.4",
@@ -24,6 +25,7 @@
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.11",
     "rimraf": "^2.6.3",
-    "sequelize": "^5.7.6"
+    "sequelize": "^5.7.6",
+    "text-file-diff": "^1.0.6"
   }
 }

@@ -62,14 +62,17 @@ router.post("/", (req, res) => {
                     }
                 }
                 else if(req.body.searchin == "files") {
-                    if(ext == "txt") {
-                        try {
-                            const fdata = fs.readFileSync(path.join(pathx,file.name));
-                            if(!fdata.includes(req.body.query)) {
-                                pass = false;
+                    if(req.body.query) {
+                        if(ext == "txt") {
+                            try {
+                                const fdata = fs.readFileSync(path.join(pathx,file.name));
+                                if(!fdata.includes(req.body.query)) {
+                                    pass = false;
+                                }
                             }
+                            catch {}
                         }
-                        catch {}
+                        else pass = false;
                     }
 
                 }
@@ -116,8 +119,8 @@ router.post("/", (req, res) => {
                       >${file.name}</a></td>
                       <td>${mtime}</td>
                       <td>${size}</td>
-                      <td>
-                      <a href="/api/files/download?filename=${file}">
+                      <td class='fileoptions'>
+                      <a href="/api/files/download?filename=${file.name}">
                         <i class="fas fa-download" title="Download"></i>
                       </a>
                     `;
@@ -130,7 +133,9 @@ router.post("/", (req, res) => {
                       </a>`;
                   htmltext += `
                       <a href="javascript:void(0)" title="Delete" class="delete-btn"><i class="fas fa-trash"></i></a>
+                      <input type='checkbox' style='display:none' class='comparebox' ${(ext != "txt")?"disabled":""}>
                       </td>
+                      
                   </tr>
                   `;
                 }

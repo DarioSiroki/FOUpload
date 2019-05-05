@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const vision = require('@google-cloud/vision');
 var rimraf = require("rimraf");
+const diff = require("diff");
 
 const STORAGE_PATH = path.join(__dirname, "..", "storage");
 
@@ -82,6 +83,25 @@ router.get("/download", (req, res) => {
       }
   });
 
+});
+
+router.post("/compare", (req, res) => {
+  if(req.user) {
+    const file1 = req.body.file1;
+    const file2 = req.body.file2;
+    
+    try {
+     var content1 = fs.readFileSync(path.join(STORAGE_PATH,String(req.user.id), String(file1)), "utf8");
+     var content2 = fs.readFileSync(path.join(STORAGE_PATH,String(req.user.id), String(file2)), "utf8");
+    }
+    catch {}
+
+    res.send(JSON.stringify(diff.diffLines(content1, content2)));
+
+
+
+
+  }
 });
 
 module.exports = router;
