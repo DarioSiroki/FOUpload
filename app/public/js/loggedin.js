@@ -1,17 +1,41 @@
 $("#uploadform").dropzone({
-    dictDefaultMessage: "Drag anywhere to upload",
+    dictDefaultMessage: "",
     url: "/api/files/",
-    method:"PUT",
-    data: {
-      path: $("input#path").val()
+    method: "PUT",
+    sending: function(file, xhr, formData) {
+      path = $("input#path").val();
+      formData.append('path', path);
+    },
+    uploadprogress: function(file, progress, bytesSent) {
+      console.log(progress);
     },
     success: function() {
-        location.reload();
+      loadAjaxSearch("path=" + $("input#path").val());
     }
-
 });
 
+var lastTarget = null;
 
+window.addEventListener("dragenter", function(e)
+{
+    lastTarget = e.target; // cache the last target here
+    // unhide our dropzone overlay
+    document.querySelector("#uploadform").style.visibility = "";
+    document.querySelector("#uploadform").style.opacity = 1;
+});
+
+window.addEventListener("dragleave", function(e)
+{
+    // this is the magic part. when leaving the window,
+    // e.target happens to be exactly what we want: what we cached
+    // at the start, the dropzone we dragged into.
+    // so..if dragleave target matches our cache, we hide the dropzone.
+    if(e.target === lastTarget || e.target === document)
+    {
+        document.querySelector("#uploadform").style.visibility = "hidden";
+        document.querySelector("#uploadform").style.opacity = 0;
+    }
+});
 
 $("html").click(function() {
     if(($(event.target).parents(".opensidebar").length == 0) && ($(event.target).parents(".sidebar").length == 0))
@@ -98,9 +122,6 @@ function loadAjaxSearch(datax) {
                 $("#filelist").html("");
                 $("#out").html("You have no files. Drag anywhere to upload.");
             }
-        },
-        error:function(o) {
-            $("#out").html(o);
         }
     });
 }
@@ -181,7 +202,7 @@ $(document).on("click", "a.file-name", function(){
 
 let handleArrow = () => {
   let folderArrow = $("#folder-arrow");
-  let path = $("input#path").val();
+  path = $("input#path").val();
   if(path!="/"){
     folderArrow.css("display", "inline")
   } else {
@@ -192,7 +213,7 @@ let handleArrow = () => {
 handleArrow();
 
 $(document).on("click", ".folder-name", function(){
-  let path = $("input#path").val();
+  path = $("input#path").val();
   path = path + $(this).html() + "/";
   $("input#path").val(path);
   loadAjaxSearch("path=" + path);
@@ -200,7 +221,7 @@ $(document).on("click", ".folder-name", function(){
 });
 
 $(document).on("click", "#folder-arrow", function(){
-  let path = $("input#path").val();
+  path = $("input#path").val();
   path = path.split("/");
   path.pop();
   path.pop();
@@ -221,7 +242,7 @@ $(document).on("click", ".stop-playback", function(){
 });
 
 $(document).on("click", ".delete-btn", function(){
-  let path = $("input#path").val();
+  path = $("input#path").val();
   path += $(this).parents("tr").find("td:nth-child(3) a").html();
   $.ajax({
     url: "/api/files",
@@ -237,7 +258,7 @@ $(document).on("click", ".delete-btn", function(){
 
 $(document).on("click", ".ocr-btn", function(){
   let target = $("div.modal-body");
-  let path = $("input#path").val();
+  path = $("input#path").val();
   path = path + $(this).parents("tr").find("td:nth-child(3) a").html();
   let loader = `
   <div class="spinner-border text-info" role="status">
@@ -280,7 +301,7 @@ $("#usersettings_form").submit(function(e) {
 
 $(document).on("submit", "#add-folder-form", function(e){
   e.preventDefault();
-  let path = $("input#path").val();
+  path = $("input#path").val();
   path += $("#add-folder-form input").val();
   $.ajax({
     url: "/api/files",

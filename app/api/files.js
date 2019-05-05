@@ -26,7 +26,7 @@ router.put("/", (req, res) => {
     } else if (req.files) {
       const file = req.files.file;
       // Create upload path string
-      const uploadPath = path.join(STORAGE_PATH, String(req.user.id));
+      const uploadPath = path.join(STORAGE_PATH, String(req.user.id), ...req.body.path.split("/"));
       // Create folders recursively if path doesn't exist
       fs.access(uploadPath, e => {
         if(e) fs.mkdirSync(uploadPath, { recursive: true });

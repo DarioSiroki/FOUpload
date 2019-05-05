@@ -1,11 +1,10 @@
 {{>sidebar}}
 <div class="content maxheight">
     <div class="maxheight">
-        <div class="col-lg-8 offset-lg-2 maxheight">
+        <div class="col-sm-8 offset-sm-2 maxheight">
             <input type="hidden" id="path" value="/">
             <form id="add-folder-form" class="form-inline">
               <div class="form-group mb-2">
-                <label class="sr-only">Password</label>
                 <input type="text" class="form-control" name="folder" placeholder="Folder name">
               </div>
               <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> Add folder</button>
@@ -16,7 +15,7 @@
 
             <form id="uploadform">
 
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                         <th scope="col"><i id="folder-arrow" class="fas fa-arrow-left"></i></th>
@@ -79,4 +78,5 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js">
+</script>
