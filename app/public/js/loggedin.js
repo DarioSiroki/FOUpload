@@ -1,5 +1,8 @@
 $("#uploadform").dropzone({
-    dictDefaultMessage: "",
+    previewsContainer: "#asd",
+    clickable:false,
+    createImageThumbnails:false,
+    dictDefaultMessage: "asd",
     url: "/api/files/",
     method: "PUT",
     sending: function(file, xhr, formData) {
@@ -11,29 +14,6 @@ $("#uploadform").dropzone({
     },
     success: function() {
       loadAjaxSearch("path=" + $("input#path").val());
-    }
-});
-
-var lastTarget = null;
-
-window.addEventListener("dragenter", function(e)
-{
-    lastTarget = e.target; // cache the last target here
-    // unhide our dropzone overlay
-    document.querySelector("#uploadform").style.visibility = "";
-    document.querySelector("#uploadform").style.opacity = 1;
-});
-
-window.addEventListener("dragleave", function(e)
-{
-    // this is the magic part. when leaving the window,
-    // e.target happens to be exactly what we want: what we cached
-    // at the start, the dropzone we dragged into.
-    // so..if dragleave target matches our cache, we hide the dropzone.
-    if(e.target === lastTarget || e.target === document)
-    {
-        document.querySelector("#uploadform").style.visibility = "hidden";
-        document.querySelector("#uploadform").style.opacity = 0;
     }
 });
 
