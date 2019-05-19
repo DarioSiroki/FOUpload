@@ -20,3 +20,5 @@ Run Node server in development mode (using nodemon):
 ```
 npm run dev
 ```
+# Note:
+OCR does not work as it requires Google cloud and some credentials exported
