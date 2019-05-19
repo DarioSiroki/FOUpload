@@ -1,4 +1,4 @@
-# Hacklica 2019
+# Hacklica 2019 hackathon event project by Dario Široki and Leonardo Gazdek
 Placed 3rd out of 13 teams with a 5000hrk prize. 
 Based on MySQL/Express/Node/jQuery.
 
